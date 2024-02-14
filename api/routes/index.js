@@ -5,7 +5,7 @@ const petsRouter = require('./pets.router');
 
 function routerApi(app) {
   const router = express.Router();
-  app.use('/api/v1', router)
+  app.use('/api/v1', router);
   router.use('/clients', clientsRouter);
   router.use('/pets', petsRouter);
 }
