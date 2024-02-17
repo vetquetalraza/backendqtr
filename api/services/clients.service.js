@@ -1,11 +1,15 @@
 const { faker } = require('@faker-js/faker');
 const boom = require('@hapi/boom');
+const sequelize = require('../../libs/sequelize');
+const pool = require('../../libs/postgres.pool');
 
 class ClientsService {
 
 constructor(){
   this.clients = [];
   this.generate();
+  this.pool = pool;
+  this.pool.on('error', (err) => console.error(err));
 }
 
 generate() {
@@ -30,12 +34,16 @@ async create(data) {
 }
 
 async find() {
-  return new Promise((resolve, reject) => {
-    setTimeout(() => {
-      resolve(this.clients);
-    }, 5000);
-  });
-  // return this.clients;
+  const query = 'SELECT * FROM client';
+  const rpta = await this.pool.query(query);
+  return rpta.rows;
+
+  // return new Promise((resolve, reject) => {
+  //   setTimeout(() => {
+  //     resolve(this.clients);
+  //   }, 5000);
+  // });
+  // // return this.clients;
 }
 
 async findOne(id){
