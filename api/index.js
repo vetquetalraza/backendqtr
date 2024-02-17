@@ -9,17 +9,19 @@ const port = process.env.PORT || 3000;
 
 app.use(express.json());
 
-const whitelist = ['http://localhost:3000','https://quetalraza.com'];
-const options = {
-  origin: (origin, callback) => {
-    if(whitelist.includes(origin) || !origin) {
-      callback(null, true);
-    } else {
-      callback(new Error('No permitido'));
-    }
-  }
-}
-app.use(cors(options));
+// const whitelist = ['http://localhost:3000','https://quetalraza.com'];
+// const options = {
+//   origin: (origin, callback) => {
+//     if(whitelist.includes(origin) || !origin) {
+//       callback(null, true);
+//     } else {
+//       callback(new Error('No permitido'));
+//     }
+//   }
+// }
+// app.use(cors(options));
+app.use(cors());
+
 
 app.get('/api', (req,res) => {
   res.send('Hello world')
