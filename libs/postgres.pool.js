@@ -6,14 +6,15 @@ const options = {};
 if (config.isProd) {
   options.connectionString = config.dbUrl;
   options.ssl = {
-    "ecdhCurve": "",
-    "enabled": true,
-    "accept_invalid_cert": false,
-    "ca_file": "",
-    "key_file": "",
-    "cert_file": "",
-    "secure_protocol": "SSLv3_method",
-    "ciphers": ""
+    rejectUnauthorized: false,
+    // "ecdhCurve": "",
+    // "enabled": true,
+    // "accept_invalid_cert": false,
+    // "ca_file": "",
+    // "key_file": "",
+    // "cert_file": "",
+    // "secure_protocol": "SSLv3_method",
+    // "ciphers": ""
   };
 } else {
 const USER = encodeURIComponent(config.dbUser);
