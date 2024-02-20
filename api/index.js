@@ -9,7 +9,7 @@ const port = process.env.PORT || 3000;
 
 app.use(express.json());
 
-const whitelist = ['http://localhost:3000','https://quetalraza.com','https://api-vet-iy2t.onrender.com'];
+const whitelist = ['http://localhost:3000','https://quetalraza.com','https://api-vet-iy2t.onrender.com','https://front-vet.onrender.com'];
 const options = {
   origin: (origin, callback) => {
     if(whitelist.includes(origin) || !origin) {
