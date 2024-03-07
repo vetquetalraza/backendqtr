@@ -5,80 +5,56 @@ const pool = require('../../libs/postgres.pool');
 class ClientsService {
 
 constructor(){
-  this.clients = [];
-  this.generate();
   this.pool = pool;
   this.pool.on('error', (err) => console.error(err));
 }
 
-generate() {
-  const limit = 100;
-  for (let index = 0 ; index < limit; index++) {
-     this.clients.push({
-     id: faker.number.int(),
-     name: faker.person.fullName(),
-     gender: faker.person.sex(),
-     isBlock: faker.datatype.boolean()
-   });
- }
-}
-
 async create(data) {
-  const newClient = {
-    id: faker.number.int(),
-    ...data
-  }
-  this.clients.push(newClient);
-  return newClient
+  var dni = data.dni;
+  var iduser = data.iduser;
+  var name = data.name;
+  var surname = data.surname;
+  var address = data.address;
+  var email = data.email;
+  var phone = data.phone;
+  var createat = new Date().toJSON();
+  var modifiedat = new Date().toJSON();
+  const query = `INSERT INTO client(dniclient, iduser, nameclient, surnameclient, addressclient, emailclient, phoneclient, createat, modifiedat)
+  VALUES ('${dni}', ${iduser}, '${name}', '${surname}', '${address}', '${email}', '${phone}', '${createat}', '${modifiedat}');`;
+  const rpta = await this.pool.query(query);
+  return rpta.rows;
 }
 
 async find() {
   const query = 'SELECT * FROM client';
   const rpta = await this.pool.query(query);
   return rpta.rows;
-
-  // return new Promise((resolve, reject) => {
-  //   setTimeout(() => {
-  //     resolve(this.clients);
-  //   }, 5000);
-  // });
-  // // return this.clients;
 }
 
 async findOne(id){
-  const client = this.clients.find(item => item.id === id);
-  if (!client) {
-    throw boom.notFound('Client not found');
-  }
-  if (client.isBlock) {
-    throw boom.conflict('Client is block');
-  }
-  return client;
+  const query = `SELECT * FROM client WHERE dniclient = '${id}'`;
+  const rpta = await this.pool.query(query);
+  return rpta.rows;
 }
 
 async update(id, changes){
-  const index = this.clients.findIndex(item => item.id === id);
-  if (index === -1) {
-    throw boom.notFound('Client not found');
-  } else {
-    const client = this.clients[index];
-    this.clients[index] = {
-      ...client,
-      ...changes
-    };
-    return this.clients[index];
-
-  }
+  var name = changes.name;
+  var surname = changes.surname;
+  var address = changes.address;
+  var email = changes.email;
+  var phone = changes.phone;
+  var modifiedat = new Date().toJSON();
+  const query = `UPDATE client
+	SET nameclient='${name}', surnameclient='${surname}', addressclient='${address}', emailclient='${email}', phoneclient='${phone}', modifiedat='${modifiedat}'
+	WHERE dniclient = '${id}'`;
+  const rpta = await this.pool.query(query);
+  return rpta.rows;
 }
 
 async delete(id){
-  const index = this.clients.findIndex(item => item.id === id);
-  if (index === -1) {
-    throw boom.notFound('Client not found');
-  } else {
-    this.clients.splice(index,1);
-    return { id };
-  }
+  const query = `DELETE FROM client WHERE dniclient = '${id}'`;
+  const rpta = await this.pool.query(query);
+  return rpta.rows;
 }
 
 }
