@@ -1,6 +1,7 @@
-const { faker } = require('@faker-js/faker');
 const boom = require('@hapi/boom');
 const pool = require('../../libs/postgres.pool');
+const UsersService = require('./users.service')
+const user = new UsersService();
 
 class ClientsService {
 
@@ -11,7 +12,10 @@ constructor(){
 
 async create(data) {
   var dni = data.dni;
-  var iduser = data.iduser;
+  var datauser = {"nameuser": dni, "password" : dni};
+  var result = await user.create(datauser);
+  var iduser = result[0].iduser;
+  console.log(iduser);
   var name = data.name;
   var surname = data.surname;
   var address = data.address;
@@ -59,4 +63,4 @@ async delete(id){
 
 }
 
-module.exports = ClientsService
+module.exports = ClientsService;
