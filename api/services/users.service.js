@@ -36,7 +36,7 @@ async update(id, changes){
   var password = changes.password;
   var modifiedat = new Date().toJSON();
   const query = `UPDATE usuario
-	SET nameuser='${nameuser}', passworduser='${password}', modifiedat='${modifiedat}'
+	SET passworduser='${password}', modifiedat='${modifiedat}'
 	WHERE iduser = '${id}';`;
   const rpta = await this.pool.query(query);
   return rpta.rows;

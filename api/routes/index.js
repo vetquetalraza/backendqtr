@@ -19,7 +19,7 @@ function routerApi(app) {
   // router.use('/inventory', inventoryRouter);
   // router.use('/pets', petsRouter);
   // router.use('/reports', reportsRouter);
-  // router.use('/users', usersRouter);
+  router.use('/users', usersRouter);
 }
 
 module.exports = routerApi;
