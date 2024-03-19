@@ -17,7 +17,7 @@ function routerApi(app) {
   router.use('/clients', clientsRouter);
   // router.use('/history', historyRouter);
   // router.use('/inventory', inventoryRouter);
-  // router.use('/pets', petsRouter);
+  router.use('/pets', petsRouter);
   // router.use('/reports', reportsRouter);
   router.use('/users', usersRouter);
 }

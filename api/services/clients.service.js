@@ -1,4 +1,3 @@
-const boom = require('@hapi/boom');
 const pool = require('../../libs/postgres.pool');
 const UsersService = require('./users.service')
 const user = new UsersService();
