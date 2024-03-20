@@ -8,11 +8,12 @@ const inventoryRouter = require('./inventory.router');
 const petsRouter = require('./pets.router');
 const reportsRouter = require('./reports.router');
 const usersRouter = require('./users.router');
+const vaccinesRouter = require('./vaccines.router');
 
 function routerApi(app) {
   const router = express.Router();
   app.use('/api/v1', router);
-  // router.use('/appointment', appointmentRouter);
+  router.use('/appointments', appointmentRouter);
   // router.use('/care', careRouter);
   router.use('/clients', clientsRouter);
   // router.use('/history', historyRouter);
@@ -20,6 +21,7 @@ function routerApi(app) {
   router.use('/pets', petsRouter);
   // router.use('/reports', reportsRouter);
   router.use('/users', usersRouter);
+  router.use('/vaccines', vaccinesRouter);
 }
 
 module.exports = routerApi;
