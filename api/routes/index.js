@@ -5,6 +5,8 @@ const careRouter = require('./care.router');
 const clientsRouter = require('./clients.router');
 const historyRouter = require('./history.router');
 const inventoryRouter = require('./inventory.router');
+const medicinesRouter = require('./medicines.router');
+const planRouter = require('./plan.router');
 const petsRouter = require('./pets.router');
 const reportsRouter = require('./reports.router');
 const usersRouter = require('./users.router');
@@ -18,6 +20,8 @@ function routerApi(app) {
   router.use('/clients', clientsRouter);
   // router.use('/history', historyRouter);
   // router.use('/inventory', inventoryRouter);
+  router.use('/medicines', medicinesRouter);
+  router.use('/plan', planRouter);
   router.use('/pets', petsRouter);
   // router.use('/reports', reportsRouter);
   router.use('/users', usersRouter);
