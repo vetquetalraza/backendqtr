@@ -3,6 +3,7 @@ const express = require('express');
 const appointmentRouter = require('./appointment.router');
 const careRouter = require('./care.router');
 const clientsRouter = require('./clients.router');
+const groomingRouter = require('./grooming.router');
 const historyRouter = require('./history.router');
 const inventoryRouter = require('./inventory.router');
 const medicinesRouter = require('./medicines.router');
@@ -18,6 +19,7 @@ function routerApi(app) {
   router.use('/appointments', appointmentRouter);
   // router.use('/care', careRouter);
   router.use('/clients', clientsRouter);
+  router.use('/grooming', groomingRouter);
   // router.use('/history', historyRouter);
   // router.use('/inventory', inventoryRouter);
   router.use('/medicines', medicinesRouter);
