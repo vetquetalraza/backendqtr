@@ -27,7 +27,10 @@ async create(data) {
 }
 
 async find() {
-  const query = 'SELECT * FROM pet;';
+  const query = `SELECT idpet, dniclient, namepet, pet.idspeciepet, namespeciepet, namegenderpet, pet.idgenderpet, idoriginpet, racepet, colorpet, birthdatepet, particularsignspet, photopet, pet.createat, pet.modifiedat
+	FROM pet
+	INNER JOIN speciePet on pet.idspeciepet = speciePet.idspeciepet
+	INNER JOIN genderPet on pet.idgenderpet = genderPet.idgenderpet;`
   const rpta = await this.pool.query(query);
   return rpta.rows;
 }
