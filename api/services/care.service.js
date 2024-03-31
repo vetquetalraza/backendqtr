@@ -8,7 +8,7 @@ constructor(){
 }
 
 async findOne(id){
-  const query = `SELECT dateappointment, timeappointment, nameclient, surnameclient, namepet, namevetservices, statusappointment FROM appointment AS ap
+  const query = `SELECT dateappointment, timeappointment, nameclient, surnameclient, namepet, namespeciepet, namevetservices, statusappointment FROM appointment AS ap
   INNER JOIN pet on pet.idpet = ap.idpet
   INNER JOIN client on client.dniclient = pet.dniclient
   INNER JOIN speciePet on pet.idspeciepet = speciePet.idspeciepet
