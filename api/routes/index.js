@@ -17,7 +17,7 @@ function routerApi(app) {
   const router = express.Router();
   app.use('/api/v1', router);
   router.use('/appointments', appointmentRouter);
-  // router.use('/care', careRouter);
+  router.use('/care', careRouter);
   router.use('/clients', clientsRouter);
   router.use('/grooming', groomingRouter);
   // router.use('/history', historyRouter);
