@@ -9,7 +9,7 @@ constructor(){
 }
 
 async create(data) {
-  var idappo = data.idappo
+  var idappo = data.idappo,
       idvaccine = data.idvaccine,
       //schedule = data.schedule,
       weight = data.weight,
