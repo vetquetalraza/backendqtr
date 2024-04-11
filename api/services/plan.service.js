@@ -22,7 +22,7 @@ async create(data) {
 
   const rpta = await this.pool.query(query);
 
-  const idschedule = rpta.data[0].idAppointment;
+  const idschedule = rpta.rows.data[0].idAppointment;
 
   idvaccine.array.forEach(element => {
     var secondQuery = `INSERT INTO historyvaccine(idvaccine, idvaccinescheduling, createat, modifiedat)
