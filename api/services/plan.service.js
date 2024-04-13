@@ -15,10 +15,11 @@ async create(data) {
       weight = data.weight,
       temperature = data.temperature,
       //nextdate = data.nextdate,
+      comments = data.comments,
       createat = new Date().toJSON(),
       modifiedat = new Date().toJSON();
-  const query = `INSERT INTO vaccinescheduling(idappointment, createat, modifiedat, weigthvaccine, temperaturevaccine)
-    VALUES (${idappo}, '${createat}', '${modifiedat}',${weight}, ${temperature}) RETURNING idvaccinescheduling`;
+  const query = `INSERT INTO vaccinescheduling(idappointment, createat, modifiedat, weigthvaccine, temperaturevaccine,commentsvaccine)
+    VALUES (${idappo}, '${createat}', '${modifiedat}',${weight}, ${temperature},'${comments}') RETURNING idvaccinescheduling`;
 
   const rpta = await this.pool.query(query);
 
