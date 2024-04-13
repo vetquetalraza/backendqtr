@@ -17,11 +17,11 @@ if (config.isProd) {
     // "ciphers": ""
   };
 } else {
-  options.connectionString = config.dbUrl;
-// const USER = encodeURIComponent(config.dbUser);
-// const PASSWORD = encodeURIComponent(config.dbPassword);
-// const URI = `postgres://${USER}:${PASSWORD}@${config.dbHost}:${config.dbPort}/${config.dbName}`;
-// options.connectionString = URI;
+  //options.connectionString = config.dbUrl;
+  const USER = encodeURIComponent(config.dbUser);
+  const PASSWORD = encodeURIComponent(config.dbPassword);
+  const URI = `postgres://${USER}:${PASSWORD}@${config.dbHost}:${config.dbPort}/${config.dbName}`;
+  options.connectionString = URI;
 }
 
 const pool = new Pool(options);
