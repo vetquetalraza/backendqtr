@@ -15,7 +15,9 @@ async create(data) {
       createat = new Date().toJSON(),
       modifiedat = new Date().toJSON();
   const query = `INSERT INTO groomingpet(idappointment, photobeforegroomingpet, photoaftergroomingpet, commentsgroomingpet,createat, modifiedat)
-	VALUES (${idappo}, '${before}', '${after}', '${comment}', '${createat}', '${modifiedat}') RETURNING idgroomingpet;`;
+	VALUES (${idappo}, '${before}', '${after}', '${comment}', '${createat}', '${modifiedat}') RETURNING idgroomingpet;
+
+  UPDATE appointment SET statusappointment = 'Atendido';`;
   const rpta = await this.pool.query(query);
   return rpta.rows;
 }

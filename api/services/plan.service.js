@@ -19,7 +19,9 @@ async create(data) {
       createat = new Date().toJSON(),
       modifiedat = new Date().toJSON();
   const query = `INSERT INTO vaccinescheduling(idappointment, createat, modifiedat, weigthvaccine, temperaturevaccine,commentsvaccine)
-    VALUES (${idappo}, '${createat}', '${modifiedat}',${weight}, ${temperature},'${comments}') RETURNING idvaccinescheduling`;
+    VALUES (${idappo}, '${createat}', '${modifiedat}',${weight}, ${temperature},'${comments}') RETURNING idvaccinescheduling;
+
+    UPDATE appointment SET statusappointment = 'Atendido';`;
 
   const rpta = await this.pool.query(query);
 
@@ -27,7 +29,7 @@ async create(data) {
 
   idvaccine.forEach(element => {
     var secondQuery = `INSERT INTO historyvaccine(idvaccine, idvaccinescheduling, createat, modifiedat)
-	  VALUES (${element}, ${idschedule}, '${createat}', '${modifiedat}') `;
+	  VALUES (${element}, ${idschedule}, '${createat}', '${modifiedat}'); `;
     this.pool.query(secondQuery);
   });
 

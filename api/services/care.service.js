@@ -13,7 +13,7 @@ async findOne(id){
   INNER JOIN client on client.dniclient = pet.dniclient
   INNER JOIN speciePet on pet.idspeciepet = speciePet.idspeciepet
   INNER JOIN vetservices on vetservices.idvetservices = ap.idvetservices
-  where dateappointment = '${id}';`;
+  where dateappointment = '${id}' and statusappointment='Agendado';`;
   const rpta = await this.pool.query(query);
   return rpta.rows;
 }
