@@ -1,4 +1,3 @@
-const id = require('faker/lib/locales/id_ID');
 const pool = require('../../libs/postgres.pool');
 
 class PlanService {
@@ -21,7 +20,7 @@ async create(data) {
   const query = `INSERT INTO vaccinescheduling(idappointment, createat, modifiedat, weigthvaccine, temperaturevaccine,commentsvaccine)
     VALUES (${idappo}, '${createat}', '${modifiedat}',${weight}, ${temperature},'${comments}') RETURNING idvaccinescheduling;
 
-    UPDATE appointment SET statusappointment = 'Atendido';`;
+    UPDATE appointment SET statusappointment = 'Atendido' WHERE idappointment = ${idappo};`;
 
   const rpta = await this.pool.query(query);
 

@@ -17,7 +17,7 @@ async create(data) {
   const query = `INSERT INTO groomingpet(idappointment, photobeforegroomingpet, photoaftergroomingpet, commentsgroomingpet,createat, modifiedat)
 	VALUES (${idappo}, '${before}', '${after}', '${comment}', '${createat}', '${modifiedat}') RETURNING idgroomingpet;
 
-  UPDATE appointment SET statusappointment = 'Atendido';`;
+  UPDATE appointment SET statusappointment = 'Atendido' WHERE idappointment = ${idappo};`;
   const rpta = await this.pool.query(query);
   return rpta.rows;
 }
