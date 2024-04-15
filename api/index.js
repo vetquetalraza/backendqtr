@@ -1,6 +1,9 @@
+const path = require('path');
+const multer = require('multer');
 const express = require('express');
 const cors = require('cors');
 const routerApi = require('./routes');
+
 
 const { logErrors,  errorHandler, boomErrorHandler } = require('./middlewares/error.handle')
 
@@ -32,9 +35,30 @@ app.use(boomErrorHandler);
 app.use(errorHandler);
 
 
+//SUBIR FOTOGRAFIAS
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+      cb(null, 'public/upload')
+  },
+  filename: (req, file, cb) => {
+      cb(null, file.fieldname + "_" + Date.now() + path.extname(file.originalname))
+  }
+})
+
+const upload = multer({
+  storage: storage
+})
+
+app.post('public/upload', upload.single('file'),(req, res) => {
+  console.log(req.file.filename)
+  return res.json(req.file.filename)
+})
+//END
+
 app.listen(port, () => {
   console.log('Listening on ' + port);
 });
+
 
 
 
