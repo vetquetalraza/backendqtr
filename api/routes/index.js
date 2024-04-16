@@ -30,9 +30,6 @@ function routerApi(app) {
   // router.use('/reports', reportsRouter);
   router.use('/users', usersRouter);
   router.use('/vaccines', vaccinesRouter);
-
-  const routerUpload = express.Router();
-  app.use('/public/upload', routerUpload);
 }
 
 module.exports = routerApi;

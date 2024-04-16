@@ -49,7 +49,7 @@ const upload = multer({
   storage: storage
 })
 
-app.post('public/upload', upload.single('file'),(req, res) => {
+app.post('/public/upload', upload.single('file'),(req, res) => {
   console.log(req.file.filename)
   return res.json(req.file.filename)
 })
