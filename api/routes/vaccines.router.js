@@ -12,6 +12,15 @@ router.get('/', async (req,res,next) => {
   }
 });
 
+router.get('/filter', async (req,res,next) => {
+  try {
+    const vaccines = await service.findFilter();
+    res.json(vaccines);
+  } catch (error) {
+    next(error);
+  }
+});
+
 router.get('/:id', async (req,res,next) => {
     try {
       const { id } = req.params;

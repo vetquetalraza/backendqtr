@@ -28,6 +28,12 @@ async find() {
   return rpta.rows;
 }
 
+async findFilter() {
+  const query = 'SELECT * FROM vaccine WHERE stockvaccine > 0;';
+  const rpta = await this.pool.query(query);
+  return rpta.rows;
+}
+
 async findOne(id){
   const query = `SELECT * FROM vaccine WHERE idvaccine= '${id}';`;
   const rpta = await this.pool.query(query);
