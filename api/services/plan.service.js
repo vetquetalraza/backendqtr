@@ -26,10 +26,10 @@ class PlanService {
     const idschedule = rpta[1].rows[0].idvaccinescheduling;
 
     idvaccine.forEach(element => {
-      var secondQuery = `INSERT INTO historyvaccine(idvaccine, idvaccinescheduling, createat, modifiedat)
-	    VALUES (${element}, ${idschedule}, '${createat}', '${modifiedat}');
+      var secondQuery = `INSERT INTO historyvaccine(idvaccine, idvaccinescheduling, createat, modifiedat,numbervaccine)
+	    VALUES (${element.idvaccine}, ${idschedule}, '${createat}', '${modifiedat}',${element.dosage});
 
-      UPDATE vaccine SET stockvaccine = stockvaccine - 1 WHERE idvaccine = ${element};`;
+      UPDATE vaccine SET stockvaccine = stockvaccine - 1 WHERE idvaccine = ${element.idvaccine};`;
       this.pool.query(secondQuery);
     });
 
