@@ -10,9 +10,10 @@ const { logErrors,  errorHandler, boomErrorHandler } = require('./middlewares/er
 const app = express();
 const port = process.env.PORT || 3001;
 
+app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.json());
 
-const whitelist = ['http://localhost:3000','https://quetalraza.com','https://api-vet-2utn.onrender.com/','https://front-vet.onrender.com'];
+const whitelist = ['http://localhost:3000','http://localhost:3001/public','https://quetalraza.com','https://api-vet-2utn.onrender.com/','https://front-vet.onrender.com'];
 const options = {
   origin: (origin, callback) => {
     if(whitelist.includes(origin) || !origin) {
@@ -38,7 +39,7 @@ app.use(errorHandler);
 //SUBIR FOTOGRAFIAS
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-      cb(null, path.join(__dirname, './images/'));
+      cb(null, path.join(__dirname, '../public/images/'));
   },
   filename: (req, file, cb) => {
       cb(null, file.fieldname + "_" + Date.now() + path.extname(file.originalname))
@@ -53,6 +54,9 @@ app.post('/public/upload', upload.single('file') ,(req, res) => {
   console.log(req.file.filename)
   return res.json(req.file.filename)
 })
+
+
+
 //END
 
 app.listen(port, () => {
