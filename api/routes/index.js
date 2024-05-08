@@ -11,6 +11,7 @@ const medicinesRouter = require('./medicines.router');
 const planRouter = require('./plan.router');
 const petsRouter = require('./pets.router');
 const reportsRouter = require('./reports.router');
+const symptomsRouter = require('./symptoms.router');
 const usersRouter = require('./users.router');
 const vaccinesRouter = require('./vaccines.router');
 
@@ -27,7 +28,7 @@ function routerApi(app) {
   router.use('/medicines', medicinesRouter);
   router.use('/plan', planRouter);
   router.use('/pets', petsRouter);
-  // router.use('/reports', reportsRouter);
+  router.use('/symptoms', symptomsRouter);
   router.use('/users', usersRouter);
   router.use('/vaccines', vaccinesRouter);
 }
