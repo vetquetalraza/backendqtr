@@ -23,8 +23,7 @@ async create(data) {
   VALUES (${idappo}, '${anamnesis}', ${weight}, ${temperature},'${treatment}','${createat}','${modifiedat}') RETURNING idpetcare;`;
 
   const rpta = await this.pool.query(query);
-
-  const idpetcare = rpta.rows[0].idpetcare;
+  const idpetcare = rpta[1].rows[0].idpetcare;
 
   symptopms.forEach(element => {
     var secondQuery = `INSERT INTO historysymptomspet(idsymptomspet, idpetcare, createat, modifiedat)
