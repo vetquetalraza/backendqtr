@@ -13,23 +13,32 @@ async create(data) {
       weight = data.weight,
       temperature = data.temperature,
       treatment = data.treatment,
+      symptopms = data.symptopms,
+      diagnosis = data.diagnosis,
       createat = new Date().toJSON(),
       modifiedat = new Date().toJSON();
-  const query = `INSERT INTO petcare(idappointment, anamnesispetcare, weightpetcare, temperaturepetcare, treatmentpetcare, createat, modifiedat)
-    VALUES (${idappo}, '${anamnesis}', ${weight}, ${temperature},'${treatment}','${createat}','${modifiedat}');
-    UPDATE appointment SET statusappointment = 'Atendido' WHERE idappointment = ${idappo};`;
+  const query = `UPDATE appointment SET statusappointment = 'Atendido' WHERE idappointment = ${idappo};
+
+  INSERT INTO petcare(idappointment, anamnesispetcare, weightpetcare, temperaturepetcare, treatmentpetcare, createat, modifiedat)
+  VALUES (${idappo}, '${anamnesis}', ${weight}, ${temperature},'${treatment}','${createat}','${modifiedat}') RETURNING idpetcare;`;
 
   const rpta = await this.pool.query(query);
 
-  // const idschedule = rpta.rows[0].idvaccinescheduling;
+  const idpetcare = rpta.rows[0].idpetcare;
 
-  // idvaccine.forEach(element => {
-  //   var secondQuery = `INSERT INTO historyvaccine(idvaccine, idvaccinescheduling, createat, modifiedat)
-	//   VALUES (${element}, ${idschedule}, '${createat}', '${modifiedat}'); `;
-  //   this.pool.query(secondQuery);
-  // });
+  symptopms.forEach(element => {
+    var secondQuery = `INSERT INTO historysymptomspet(idsymptomspet, idpetcare, createat, modifiedat)
+      VALUES (${element}, ${idpetcare}, '${createat}', '${modifiedat}');`
+    this.pool.query(secondQuery);
+  });
 
-  return rpta.rows;
+
+  diagnosis.forEach(element => {
+    var thirdQuery = `INSERT INTO historydiagnosispet(iddiagnosispet, idpetcare, createat, modifiedat)
+      VALUES (${element}, ${idpetcare}, '${createat}', '${modifiedat}'); `
+    this.pool.query(thirdQuery);
+  });
+  return 1;
 }
 
 
