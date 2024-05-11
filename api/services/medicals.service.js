@@ -13,19 +13,19 @@ async create(data) {
       weight = data.weight,
       temperature = data.temperature,
       treatment = data.treatment,
-      symptopms = data.symptopms,
+      symptoms = data.symptoms,
       diagnosis = data.diagnosis,
       createat = new Date().toJSON(),
       modifiedat = new Date().toJSON();
   const query = `UPDATE appointment SET statusappointment = 'Atendido' WHERE idappointment = ${idappo};
 
   INSERT INTO petcare(idappointment, anamnesispetcare, weightpetcare, temperaturepetcare, treatmentpetcare, createat, modifiedat)
-  VALUES (${idappo}, '${anamnesis}', ${weight}, ${temperature},'${treatment}','${createat}','${modifiedat}') RETURNING idpetcare;`;
+  VALUES (${idappo}, '${anamnesis}', ${weight}, ${temperature},'${treatment}','${createat}','${modifiedat}') RETURNING idpetcare`;
 
   const rpta = await this.pool.query(query);
   const idpetcare = rpta[1].rows[0].idpetcare;
 
-  symptopms.forEach(element => {
+  symptoms.forEach(element => {
     var secondQuery = `INSERT INTO historysymptomspet(idsymptomspet, idpetcare, createat, modifiedat)
       VALUES (${element}, ${idpetcare}, '${createat}', '${modifiedat}');`
     this.pool.query(secondQuery);
