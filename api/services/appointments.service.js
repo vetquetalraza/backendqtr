@@ -23,7 +23,9 @@ async create(data) {
 }
 
 async find() {
-  const query = 'SELECT * FROM appointment;';
+  const query = `SELECT ap.idappointment ,namevetservices,TO_CHAR(dateappointment, 'yyyy-mm-dd') as  dateappointment, timeappointment
+  FROM appointment as ap
+  INNER JOIN vetservices as vt on ap.idvetservices = vt.idvetservices`;
   const rpta = await this.pool.query(query);
   return rpta.rows;
 }
