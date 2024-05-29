@@ -10,20 +10,21 @@ constructor(){
 async create(data) {
   var idpet = data.idpet,
       idservice = data.idservice,
-      startappo = data.startappo,
-      endappo = data.endappo,
+      dateappo = data.dateappo,
+      timeappo = data.timeappo,
       comment = data.comment,
       status = data.status,
+      duration = data.duration,
       createat = new Date().toJSON(),
       modifiedat = new Date().toJSON();
-  const query = `INSERT INTO appointment(idpet, idvetservices, startappointment, endappointment, commentappointment, statusappointment, createat, modifiedat)
-    VALUES (${idpet}, ${idservice}, '${startappo}', '${endappo}', '${comment}', '${status}', '${createat}', '${modifiedat}') RETURNING idappointment;`;
+  const query = `INSERT INTO appointment(idpet, idvetservices, dateappointment, timeappointment, commentappointment, statusappointment, createat, modifiedat,durationappointment)
+    VALUES (${idpet}, ${idservice}, '${dateappo}', '${timeappo}', '${comment}', '${status}', '${createat}', '${modifiedat}','${duration}') RETURNING idappointment;`;
   const rpta = await this.pool.query(query);
   return rpta.rows;
 }
 
 async find() {
-  const query = `SELECT ap.idappointment ,namevetservices, startappointment, endappointment
+  const query = `SELECT ap.idappointment ,namevetservices,TO_CHAR(dateappointment, 'yyyy-mm-dd') as  dateappointment, timeappointment, durationappointment
   FROM appointment as ap
   INNER JOIN vetservices as vt on ap.idvetservices = vt.idvetservices`;
   const rpta = await this.pool.query(query);
@@ -38,13 +39,14 @@ async findOne(id){
 
 async update(id, changes){
   var idservice = changes.idservice,
-      startappo = changes.startappo,
-      endappo = changes.endappo,
+      dateappo = changes.dateappo,
+      timeappo = changes.timeappo,
       comment = changes.comment,
       status = changes.status,
+      duration = data.duration,
       modifiedat = new Date().toJSON();
   const query = `UPDATE appointment
-	SET idvetservices=${idservice}, startappointment='${startappo}', endappointment='${endappo}', commentappointment='${comment}', statusappointment='${status}', modifiedat='${modifiedat}'
+	SET idvetservices=${idservice}, dateappointment='${dateappo}', timeappointment='${timeappo}', durationappointment = '${duration}', commentappointment='${comment}', statusappointment='${status}', modifiedat='${modifiedat}'
 	WHERE idappointment = '${id}';`;
   const rpta = await this.pool.query(query);
   return rpta.rows;
