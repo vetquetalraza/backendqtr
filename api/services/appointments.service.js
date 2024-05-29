@@ -23,7 +23,7 @@ async create(data) {
 }
 
 async find() {
-  const query = `SELECT ap.idappointment ,namevetservices,TO_CHAR(startappointment, 'yyyy-mm-dd hh:mm') as  dateappointment, endappointment
+  const query = `SELECT ap.idappointment ,namevetservices, startappointment, endappointment
   FROM appointment as ap
   INNER JOIN vetservices as vt on ap.idvetservices = vt.idvetservices`;
   const rpta = await this.pool.query(query);
