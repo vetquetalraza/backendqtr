@@ -41,6 +41,12 @@ async findOne(id){
   return rpta.rows;
 }
 
+async findByClient(id){
+  const query = `SELECT * FROM pet WHERE dniclient= '${id}';`;
+  const rpta = await this.pool.query(query);
+  return rpta.rows;
+}
+
 async update(id, changes){
   var namepet = changes.namepet,
       idspecie = changes.idspecie,

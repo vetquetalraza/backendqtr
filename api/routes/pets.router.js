@@ -23,6 +23,18 @@ router.get('/:id', async (req,res,next) => {
   }
 );
 
+
+router.get('/client/:id', async (req,res,next) => {
+  try {
+    const { id } = req.params;
+    const pet = await service.findByClient(id);
+    res.json(pet);
+  } catch (error) {
+    next(error);
+  }
+}
+);
+
 router.post('/', async (req, res,next)  => {
     try {
       const body = req.body;
