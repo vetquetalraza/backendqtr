@@ -23,19 +23,19 @@ async create(data) {
 }
 
 async find() {
-  const query = 'SELECT * FROM vaccine;';
+  const query = 'SELECT * FROM drugs;';
   const rpta = await this.pool.query(query);
   return rpta.rows;
 }
 
 async findFilter() {
-  const query = 'SELECT * FROM vaccine WHERE stockvaccine > 0;';
+  const query = 'SELECT * FROM drugs WHERE stockvaccine > 0;';
   const rpta = await this.pool.query(query);
   return rpta.rows;
 }
 
 async findOne(id){
-  const query = `SELECT * FROM vaccine WHERE idvaccine= '${id}';`;
+  const query = `SELECT * FROM drugs WHERE iddrug= '${id}';`;
   const rpta = await this.pool.query(query);
   return rpta.rows;
 }
@@ -56,7 +56,7 @@ async update(id, changes){
 }
 
 async delete(id){
-  const query = `DELETE FROM vaccine WHERE idvaccine = '${id}';`;
+  const query = `DELETE FROM drugs WHERE iddrug = '${id}';`;
   const rpta = await this.pool.query(query);
   return rpta.rows;
 }
