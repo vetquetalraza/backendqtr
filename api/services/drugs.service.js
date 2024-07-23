@@ -17,7 +17,7 @@ async create(data) {
       createat = new Date().toJSON(),
       modifiedat = new Date().toJSON();
   const query = `INSERT INTO drugs(namedrug, descriptiondrug, presentationdrug, quantityperpresentation, categorydrug, branddrug, createat, modifiedat)
-	VALUES ('${name}', '${description}', '${presentation}', '${quantity}', '${category}', ${brand}, '${createat}', '${modifiedat}') RETURNING iddrug;`;
+	VALUES ('${name}', '${description}', '${presentation}', '${quantity}', '${category}', '${brand}', '${createat}', '${modifiedat}') RETURNING iddrug;`;
   const rpta = await this.pool.query(query);
   return rpta.rows;
 }
