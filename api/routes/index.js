@@ -4,6 +4,7 @@ const appointmentRouter = require('./appointment.router');
 const careRouter = require('./care.router');
 const clientsRouter = require('./clients.router');
 const diagnosisRouter = require('./diagnosis.router');
+const drugsRouter = require('./drugs.router');
 const groomingRouter = require('./grooming.router');
 const historyRouter = require('./history.router');
 const inventoryRouter = require('./inventory.router');
@@ -23,7 +24,7 @@ function routerApi(app) {
   router.use('/care', careRouter);
   router.use('/clients', clientsRouter);
   router.use('/diagnosis', diagnosisRouter);
-
+  router.use('/drugs', drugsRouter);
   router.use('/grooming', groomingRouter);
   // router.use('/history', historyRouter);
   // router.use('/inventory', inventoryRouter);
