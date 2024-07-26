@@ -41,10 +41,10 @@ class PlanService {
   }
 
   async findOne(id) {
-    const query = `SELECT ap.idappointment, numbervaccine, hi.idvaccine , vc.namevaccine, TO_CHAR(dateappointment, 'dd/mm/yyyy') as dateappointment from appointment as ap
+    const query = `SELECT ap.idappointment, numbervaccine, hi.iddrug , vc.namedrug, TO_CHAR(dateappointment, 'dd/mm/yyyy') as dateappointment from appointment as ap
     INNER JOIN vaccinescheduling as sc ON sc.idappointment = ap.idappointment
     INNER JOIN historyvaccine as hi ON hi.idvaccinescheduling = sc.idvaccinescheduling
-    INNER JOIN vaccine as vc ON vc.idvaccine = hi.idvaccine
+    INNER JOIN drugs as vc ON vc.iddrug = hi.iddrug
     WHERE ap.idpet = ${id};`;
     const rpta = await this.pool.query(query);
     return rpta.rows;
