@@ -29,7 +29,7 @@ async find() {
 }
 
 async findFilter() {
-  const query = 'SELECT * FROM drugs WHERE stockvaccine > 0;';
+  const query = `SELECT * FROM drugs WHERE categorydrug = 'Vacuna';`;
   const rpta = await this.pool.query(query);
   return rpta.rows;
 }
