@@ -1,6 +1,7 @@
 const express = require('express');
 
 const appointmentRouter = require('./appointment.router');
+const batchRouter = require('./batch.router');
 const careRouter = require('./care.router');
 const clientsRouter = require('./clients.router');
 const diagnosisRouter = require('./diagnosis.router');
@@ -21,6 +22,7 @@ function routerApi(app) {
   const router = express.Router();
   app.use('/api/v1', router);
   router.use('/appointments', appointmentRouter);
+  router.use('/batch', batchRouter);
   router.use('/care', careRouter);
   router.use('/clients', clientsRouter);
   router.use('/diagnosis', diagnosisRouter);
