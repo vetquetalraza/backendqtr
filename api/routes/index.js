@@ -28,7 +28,7 @@ function routerApi(app) {
   router.use('/diagnosis', diagnosisRouter);
   router.use('/drugs', drugsRouter);
   router.use('/grooming', groomingRouter);
-  // router.use('/history', historyRouter);
+  router.use('/history', historyRouter);
   // router.use('/inventory', inventoryRouter);
   router.use('/medical', medicalsRouter);
   router.use('/medicines', medicinesRouter);
