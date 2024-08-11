@@ -23,7 +23,22 @@ async create(data) {
 }
 
 async find() {
-  const query = 'SELECT * FROM drugs;';
+  const query = `SELECT
+    dr.iddrug, dr.namedrug, dr.descriptiondrug, dr.presentationdrug, dr.quantityperpresentation, dr.categorydrug, dr.branddrug,
+    COALESCE(SUM(bt_quantity), 0) AS total_batches ,
+    COALESCE(SUM(hv_quantity), 0) AS total_history
+FROM
+    drugs dr
+LEFT JOIN
+    (SELECT iddrug, SUM(quantity) AS bt_quantity
+     FROM batchesdrugs
+     GROUP BY iddrug) AS bt ON dr.iddrug = bt.iddrug
+LEFT JOIN
+    (SELECT iddrug, SUM(quantity) AS hv_quantity
+     FROM historyvaccine
+     GROUP BY iddrug) AS hv ON dr.iddrug = hv.iddrug
+GROUP BY
+    dr.iddrug;`;
   const rpta = await this.pool.query(query);
   return rpta.rows;
 }
