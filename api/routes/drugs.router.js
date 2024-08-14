@@ -21,6 +21,15 @@ router.get('/filter', async (req,res,next) => {
   }
 });
 
+router.get('/med', async (req,res,next) => {
+  try {
+    const drugs = await service.findMedicines();
+    res.json(drugs);
+  } catch (error) {
+    next(error);
+  }
+});
+
 router.get('/:id', async (req,res,next) => {
     try {
       const { id } = req.params;

@@ -43,6 +43,12 @@ GROUP BY
   return rpta.rows;
 }
 
+async findMedicines() {
+  const query = 'SELECT * FROM drugs;';
+  const rpta = await this.pool.query(query);
+  return rpta.rows;
+}
+
 async findFilter() {
   const query = 'SELECT * FROM drugs WHERE stockvaccine > 0;';
   const rpta = await this.pool.query(query);
