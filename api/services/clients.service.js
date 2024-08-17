@@ -11,9 +11,6 @@ constructor(){
 
 async create(data) {
   var dni = data.dni;
-  var datauser = {"nameuser": dni, "password" : dni};
-  var result = await user.create(datauser);
-  var iduser = result[0].iduser;
   var name = data.name;
   var surname = data.surname;
   var address = data.address;
@@ -33,8 +30,17 @@ async create(data) {
           SET nameclient='${name}', surnameclient='${surname}', addressclient='${address}', emailclient='${email}', phoneclient='${phone}', modifiedat='${modifiedat}'
           WHERE dniclient = '${dni}';
       ELSE
+
+          WITH inserted_user AS (
+            INSERT INTO usuario(nameuser, passworduser, createat, modifiedat)
+            VALUES ('${dni}', '${dni}', '${createat}', '${modifiedat}')
+            RETURNING iduser
+          )
+
           INSERT INTO client(dniclient, iduser, nameclient, surnameclient, addressclient, emailclient, phoneclient, createat, modifiedat)
-          VALUES ('${dni}', ${iduser}, '${name}', '${surname}', '${address}', '${email}', '${phone}', '${createat}', '${modifiedat}');
+          SELECT '${dni}', iduser, '${name}', '${surname}', '${address}', '${email}', '${phone}', '${createat}', '${modifiedat}'
+          FROM inserted_user;
+
       END IF;
   END $$;`;
 
