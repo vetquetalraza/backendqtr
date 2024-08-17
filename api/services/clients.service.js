@@ -14,7 +14,6 @@ async create(data) {
   var datauser = {"nameuser": dni, "password" : dni};
   var result = await user.create(datauser);
   var iduser = result[0].iduser;
-  console.log(iduser);
   var name = data.name;
   var surname = data.surname;
   var address = data.address;
@@ -22,8 +21,23 @@ async create(data) {
   var phone = data.phone;
   var createat = new Date().toJSON();
   var modifiedat = new Date().toJSON();
-  const query = `INSERT INTO client(dniclient, iduser, nameclient, surnameclient, addressclient, emailclient, phoneclient, createat, modifiedat)
-  VALUES ('${dni}', ${iduser}, '${name}', '${surname}', '${address}', '${email}', '${phone}', '${createat}', '${modifiedat}');`;
+  const query = `
+  DO $$
+  BEGIN
+      IF EXISTS (
+          SELECT 1
+          FROM client
+          WHERE dniclient = '${dni}'
+      ) THEN
+          UPDATE client
+          SET nameclient='${name}', surnameclient='${surname}', addressclient='${address}', emailclient='${email}', phoneclient='${phone}', modifiedat='${modifiedat}'
+          WHERE dniclient = '${dni}';
+      ELSE
+          INSERT INTO client(dniclient, iduser, nameclient, surnameclient, addressclient, emailclient, phoneclient, createat, modifiedat)
+          VALUES ('${dni}', ${iduser}, '${name}', '${surname}', '${address}', '${email}', '${phone}', '${createat}', '${modifiedat}');
+      END IF;
+  END $$;`;
+
   const rpta = await this.pool.query(query);
   return rpta.rows;
 }
