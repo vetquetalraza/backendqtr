@@ -7,8 +7,9 @@ constructor(){
   this.pool.on('error', (err) => console.error(err));
 }
 
-async create(data) {
-  var client = data.client,
+async create_update(data) {
+  var id = data.idpet,
+      client = data.client,
       namepet = data.namepet,
       idspecie = data.idspecie,
       idgender = data.idgender,
@@ -20,8 +21,25 @@ async create(data) {
       photo = data.photo,
       createat = new Date().toJSON(),
       modifiedat = new Date().toJSON();
-  const query = `INSERT INTO pet(dniclient, namepet, idspeciepet, idgenderpet, idoriginpet, racepet, colorpet, birthdatepet, particularsignspet, photopet, createat, modifiedat)
-	VALUES ( '${client}', '${namepet}', ${idspecie}, ${idgender}, ${idorigin}, '${race}', '${color}', '${birthdate}', '${signs}', '${photo}', '${createat}', '${modifiedat}') RETURNING idpet;`;
+  const query = `
+  DO $$
+  BEGIN
+      IF EXISTS (
+          SELECT 1
+          FROM pet
+          WHERE pet = ${id}
+      ) THEN
+          UPDATE pet
+	        SET namepet='${namepet}', idspeciepet=${idspecie}, idgenderpet=${idgender}, idoriginpet=${idorigin}, racepet='${race}', colorpet='${color}', birthdatepet='${birthdate}', particularsignspet='${signs}', photopet='${photo}', modifiedat='${modifiedat}'
+	        WHERE idpet = ${id};
+      ELSE
+
+        INSERT INTO pet(dniclient, namepet, idspeciepet, idgenderpet, idoriginpet, racepet, colorpet, birthdatepet, particularsignspet, photopet, createat, modifiedat)
+	      VALUES ( '${client}', '${namepet}', ${idspecie}, ${idgender}, ${idorigin}, '${race}', '${color}', '${birthdate}', '${signs}', '${photo}', '${createat}', '${modifiedat}');
+
+      END IF;
+  END $$;`;
+
   const rpta = await this.pool.query(query);
   return rpta.rows;
 }
@@ -36,31 +54,13 @@ async find() {
 }
 
 async findOne(id){
-  const query = `SELECT * FROM pet WHERE idpet= '${id}';`;
+  const query = `SELECT * FROM pet WHERE idpet= ${id};`;
   const rpta = await this.pool.query(query);
   return rpta.rows;
 }
 
 async findByClient(id){
   const query = `SELECT * FROM pet WHERE dniclient= '${id}';`;
-  const rpta = await this.pool.query(query);
-  return rpta.rows;
-}
-
-async update(id, changes){
-  var namepet = changes.namepet,
-      idspecie = changes.idspecie,
-      idgender = changes.idgender,
-      idorigin = changes.idorigin,
-      race = changes.race,
-      color = changes.color,
-      birthdate = changes.birthdate,
-      signs = changes.signs,
-      photo = changes.photo,
-      modifiedat = new Date().toJSON();
-  const query = `UPDATE pet
-	SET namepet='${namepet}', idspeciepet=${idspecie}, idgenderpet=${idgender}, idoriginpet=${idorigin}, racepet='${race}', colorpet='${color}', birthdatepet='${birthdate}', particularsignspet='${signs}', photopet='${photo}', modifiedat='${modifiedat}'
-	WHERE idpet = '${id}';`;
   const rpta = await this.pool.query(query);
   return rpta.rows;
 }

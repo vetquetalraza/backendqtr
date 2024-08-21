@@ -38,7 +38,7 @@ router.get('/client/:id', async (req,res,next) => {
 router.post('/', async (req, res,next)  => {
     try {
       const body = req.body;
-      const newPet = await service.create(body);
+      const newPet = await service.create_update(body);
       res.status(201).json(newPet)
     } catch (error) {
       next(error);
@@ -46,17 +46,6 @@ router.post('/', async (req, res,next)  => {
   }
 );
 
-router.patch('/:id', async (req, res,next)  => {
-    try {
-      const { id } = req.params;
-      const body = req.body;
-      const pet = await service.update(id, body);
-      res.json(pet)
-    } catch (error) {
-      next(error);
-    }
-  }
-);
 
 router.delete('/:id', async (req, res, next)  => {
   try {
