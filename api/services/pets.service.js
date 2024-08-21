@@ -66,7 +66,7 @@ async update(id, changes){
 }
 
 async delete(id){
-  const query = `DELETE FROM pet WHERE idpet = '${id}';`;
+  const query = `DELETE FROM pet WHERE idpet = ${id};`;
   const rpta = await this.pool.query(query);
   return rpta.rows;
 }
