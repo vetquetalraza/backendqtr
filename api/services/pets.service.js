@@ -27,7 +27,7 @@ async create_update(data) {
       IF EXISTS (
           SELECT 1
           FROM pet
-          WHERE pet = ${id}
+          WHERE idpet = ${id}
       ) THEN
           UPDATE pet
 	        SET namepet='${namepet}', idspeciepet=${idspecie}, idgenderpet=${idgender}, idoriginpet=${idorigin}, racepet='${race}', colorpet='${color}', birthdatepet='${birthdate}', particularsignspet='${signs}', photopet='${photo}', modifiedat='${modifiedat}'
