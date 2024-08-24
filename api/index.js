@@ -66,7 +66,7 @@ const storage = multer.diskStorage({
 const upload = multer({ storage });
 
 // Middleware para servir archivos estáticos
-app.use('/uploads', express.static('uploads'));
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 // Ruta para subir archivos
 app.post('/upload', upload.single('photo'), (req, res) => {
