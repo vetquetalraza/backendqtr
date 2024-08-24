@@ -3,6 +3,7 @@ const multer = require('multer');
 const express = require('express');
 const cors = require('cors');
 const routerApi = require('./routes');
+const fs = require('fs');
 
 const { logErrors,  errorHandler, boomErrorHandler } = require('./middlewares/error.handle')
 
@@ -36,23 +37,33 @@ app.use(errorHandler);
 
 
 //SUBIR FOTOGRAFIAS
+// const storage = multer.diskStorage({
+//   destination: (req, file, cb) => {
+//       cb(null, path.join(__dirname, 'uploads/'));
+//   },
+//   filename: (req, file, cb) => {
+//       cb(null, file.fieldname + "_" + Date.now() + path.extname(file.originalname))
+//   }
+// })
+
+const uploadDir = path.join(__dirname, 'uploads');
+
+if (!fs.existsSync(uploadDir)) {
+  fs.mkdirSync(uploadDir);
+}
+
+// Configuración de almacenamiento con multer
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-      cb(null, path.join(__dirname, 'uploads/'));
+    cb(null, path.join(__dirname, 'uploads/')); // Carpeta donde se almacenarán los archivos
   },
   filename: (req, file, cb) => {
-      cb(null, file.fieldname + "_" + Date.now() + path.extname(file.originalname))
+    const ext = path.extname(file.originalname);
+    cb(null, Date.now() + ext); // Nombre del archivo
   }
-})
+});
 
-const upload = multer({
-  storage: storage
-})
-
-app.post('/public/upload', upload.single('file') ,(req, res) => {
-  console.log(req.file.filename)
-  return res.json(req.file.filename)
-})
+const upload = multer({ storage });
 
 // Middleware para servir archivos estáticos
 app.use('/uploads', express.static('uploads'));
