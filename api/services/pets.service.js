@@ -54,7 +54,10 @@ async find() {
 }
 
 async findOne(id){
-  const query = `SELECT * FROM pet WHERE idpet= ${id};`;
+  const query = `
+  SELECT idpet, pet.dniclient, nameclient,surnameclient,namepet, idspeciepet, idgenderpet, idoriginpet, racepet, colorpet, TO_CHAR(birthdatepet, 'yyyy-mm-dd') as birthdatepet, particularsignspet, photopet
+  FROM pet
+  INNER JOIN client ON pet.dniclient = client.dniclient WHERE idpet= ${id};`;
   const rpta = await this.pool.query(query);
   return rpta.rows;
 }
