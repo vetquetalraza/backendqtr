@@ -4,7 +4,6 @@ const express = require('express');
 const cors = require('cors');
 const routerApi = require('./routes');
 
-
 const { logErrors,  errorHandler, boomErrorHandler } = require('./middlewares/error.handle')
 
 const app = express();
@@ -39,7 +38,7 @@ app.use(errorHandler);
 //SUBIR FOTOGRAFIAS
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-      cb(null, path.join(__dirname, '../public/images/'));
+      cb(null, path.join(__dirname, 'uploads/'));
   },
   filename: (req, file, cb) => {
       cb(null, file.fieldname + "_" + Date.now() + path.extname(file.originalname))
@@ -55,7 +54,13 @@ app.post('/public/upload', upload.single('file') ,(req, res) => {
   return res.json(req.file.filename)
 })
 
+// Middleware para servir archivos estáticos
+app.use('/uploads', express.static('uploads'));
 
+// Ruta para subir archivos
+app.post('/upload', upload.single('photo'), (req, res) => {
+  res.send({ filePath: `/uploads/${req.file.filename}` });
+});
 
 //END
 
