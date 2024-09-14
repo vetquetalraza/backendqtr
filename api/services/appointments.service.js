@@ -32,31 +32,24 @@ async find() {
 }
 
 async findOne(id){
-  const query = `SELECT * FROM appointment WHERE idappointment= '${id}';`;
-  const rpta = await this.pool.query(query);
-  return rpta.rows;
-}
-
-async update(id, changes){
-  var idservice = changes.idservice,
-      dateappo = changes.dateappo,
-      timeappo = changes.timeappo,
-      comment = changes.comment,
-      status = changes.status,
-      duration = data.duration,
-      modifiedat = new Date().toJSON();
-  const query = `UPDATE appointment
-	SET idvetservices=${idservice}, dateappointment='${dateappo}', timeappointment='${timeappo}', durationappointment = '${duration}', commentappointment='${comment}', statusappointment='${status}', modifiedat='${modifiedat}'
-	WHERE idappointment = '${id}';`;
+  const query = `SELECT cl.dniclient, cl.nameclient, cl.surnameclient, ap.idpet, ap.idappointment ,idvetservices,TO_CHAR(dateappointment, 'yyyy-mm-dd') as  dateappointment, timeappointment, durationappointment, commentappointment,statusappointment
+FROM appointment as ap
+INNER JOIN pet as pt on ap.idpet = pt.idpet
+INNER JOIN client as cl on pt.dniclient = cl.dniclient
+WHERE ap.idappointment  =  '${id}';`;
   const rpta = await this.pool.query(query);
   return rpta.rows;
 }
 
 async delete(id){
-  const query = `DELETE FROM appointment WHERE idappointment = '${id}';`;
+  var modifiedat = new Date().toJSON();
+  const query = `UPDATE appointment
+	SET statusappointment='3', modifiedat='${modifiedat}'
+	WHERE idappointment = '${id}';`;
   const rpta = await this.pool.query(query);
   return rpta.rows;
 }
+
 
 }
 
