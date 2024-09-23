@@ -8,7 +8,8 @@ constructor(){
 }
 
 async create_update(data) {
-  var idpet = data.idpet,
+  var idappo = data.idappo,
+      idpet = data.idpet,
       idservice = data.idservice,
       dateappo = data.dateappo,
       timeappo = data.timeappo,
@@ -23,11 +24,11 @@ async create_update(data) {
       IF EXISTS (
           SELECT 1
           FROM appointment
-          WHERE idappointment = ${id}
+          WHERE idappointment = ${idappo}
       ) THEN
           UPDATE appointment
 	        SET idvetservices=${idservice}, commentappointment='${comment}', statusappointment='${status}', modifiedat='${modifiedat}'
-	        WHERE idappointment = ${id};
+	        WHERE idappointment = ${idappo};
       ELSE
 
         INSERT INTO appointment(idpet, idvetservices, dateappointment, timeappointment, commentappointment, statusappointment, createat, modifiedat,durationappointment)
