@@ -27,7 +27,7 @@ async create_update(data) {
           WHERE idappointment = ${idappo}
       ) THEN
           UPDATE appointment
-	        SET idvetservices=${idservice}, commentappointment='${comment}', statusappointment='${status}', modifiedat='${modifiedat}'
+	        SET idvetservices=${idservice},dateappointment='${dateappo}', timeappointment='${timeappo}',commentappointment='${comment}', statusappointment='${status}', modifiedat='${modifiedat}'
 	        WHERE idappointment = ${idappo};
       ELSE
 
