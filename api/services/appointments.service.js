@@ -7,7 +7,7 @@ constructor(){
   this.pool.on('error', (err) => console.error(err));
 }
 
-async create(data) {
+async create_update(data) {
   var idpet = data.idpet,
       idservice = data.idservice,
       dateappo = data.dateappo,
@@ -17,8 +17,24 @@ async create(data) {
       duration = data.duration,
       createat = new Date().toJSON(),
       modifiedat = new Date().toJSON();
-  const query = `INSERT INTO appointment(idpet, idvetservices, dateappointment, timeappointment, commentappointment, statusappointment, createat, modifiedat,durationappointment)
-    VALUES (${idpet}, ${idservice}, '${dateappo}', '${timeappo}', '${comment}', '${status}', '${createat}', '${modifiedat}',${duration}) RETURNING idappointment;`;
+  const query = `
+  DO $$
+  BEGIN
+      IF EXISTS (
+          SELECT 1
+          FROM appointment
+          WHERE idappointment = ${id}
+      ) THEN
+          UPDATE appointment
+	        SET idvetservices=${idservice}, commentappointment='${comment}', statusappointment='${status}', modifiedat='${modifiedat}'
+	        WHERE idappointment = ${id};
+      ELSE
+
+        INSERT INTO appointment(idpet, idvetservices, dateappointment, timeappointment, commentappointment, statusappointment, createat, modifiedat,durationappointment)
+        VALUES (${idpet}, ${idservice}, '${dateappo}', '${timeappo}', '${comment}', '${status}', '${createat}', '${modifiedat}',${duration});
+
+      END IF;
+  END $$;`;
   const rpta = await this.pool.query(query);
   return rpta.rows;
 }
@@ -40,16 +56,6 @@ WHERE ap.idappointment  =  '${id}';`;
   const rpta = await this.pool.query(query);
   return rpta.rows;
 }
-
-async delete(id){
-  var modifiedat = new Date().toJSON();
-  const query = `UPDATE appointment
-	SET statusappointment='3', modifiedat='${modifiedat}'
-	WHERE idappointment = '${id}';`;
-  const rpta = await this.pool.query(query);
-  return rpta.rows;
-}
-
 
 }
 
