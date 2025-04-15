@@ -30,6 +30,7 @@ function routerApi(app) {
   router.use('/grooming', groomingRouter);
   router.use('/history', historyRouter);
   // router.use('/inventory', inventoryRouter);
+  router.use('/login', usersRouter);
   router.use('/medical', medicalsRouter);
   router.use('/medicines', medicinesRouter);
   router.use('/plan', planRouter);

@@ -25,8 +25,10 @@ async find() {
   return rpta.rows;
 }
 
-async findOne(id){
-  const query = `SELECT * FROM usuario WHERE iduser = '${id}';`;
+async authenticate(values){
+  var nameuser = values.username;
+  var password = values.password;
+  const query = `SELECT iduser, nameuser, passworduser FROM usuario WHERE nameuser = '${nameuser}' and passworduser = '${password}';`;
   const rpta = await this.pool.query(query);
   return rpta.rows;
 }

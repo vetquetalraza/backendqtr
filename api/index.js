@@ -4,11 +4,30 @@ const express = require('express');
 const cors = require('cors');
 const routerApi = require('./routes');
 const fs = require('fs');
+const jwt = require('jsonwebtoken');
+
 
 const { logErrors,  errorHandler, boomErrorHandler } = require('./middlewares/error.handle')
 
 const app = express();
 const port = process.env.PORT || 3001;
+
+
+//****************************************************************************************************
+
+// Ruta protegida
+//app.get('/api', (req, res) => {
+
+//   const token = req.headers['authorization'];
+//   if (!token) return res.status(403).json({ message: 'No token provided' });
+
+//   jwt.verify(token, SECRET, (err, decoded) => {
+//     if (err) return res.status(401).json({ message: 'Token inválido' });
+//     res.json({ message: `Bienvenido usuario ID ${decoded.id}` });
+//   });
+//});
+
+//****************************************************************************************************
 
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.json());
@@ -23,12 +42,8 @@ const options = {
     }
   }
 }
+
 app.use(cors(options));
-
-app.get('/api', (req,res) => {
-  res.send('Hello world')
-});
-
 routerApi(app);
 
 app.use(logErrors);
