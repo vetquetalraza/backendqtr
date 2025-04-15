@@ -37,7 +37,7 @@ router.post('/', async (req, res,next)  => {
   }
 );
 
-router.get('/login', async (req, res,next)  => {
+router.post('/login', async (req, res,next)  => {
 
     const body = req.body;
     const login = await service.authenticate(body);
