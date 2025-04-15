@@ -37,19 +37,19 @@ router.post('/', async (req, res,next)  => {
   }
 );
 
-router.post('/login', async (req, res,next)  => {
+router.get('/login', async (req, res,next)  => {
 
     const body = req.body;
-    const user = await service.authenticate(body);
+    const login = await service.authenticate(body);
+    res.json(login);
+    // if (!user) return res.status(404).json({ message: 'Usuario no encontrado' });
 
-    if (!user) return res.status(404).json({ message: 'Usuario no encontrado' });
+    // const passwordIsValid = bcrypt.compareSync(body.password, user.password);
+    // if (!passwordIsValid) return res.status(401).json({ message: 'Contraseña incorrecta' });
 
-    const passwordIsValid = bcrypt.compareSync(body.password, user.password);
-    if (!passwordIsValid) return res.status(401).json({ message: 'Contraseña incorrecta' });
+    // const token = jwt.sign({ id: user.iduser }, SECRET, { expiresIn: '1h' });
 
-    const token = jwt.sign({ id: user.iduser }, SECRET, { expiresIn: '1h' });
-
-    res.json({ token });
+    // res.json({ token });
 }
 );
 
