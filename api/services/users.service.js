@@ -26,7 +26,7 @@ async find() {
 }
 
 async findOne(id) {
-  const query = `SELECT * FROM usuario WHERE iduser = '${id}'`;
+  const query = `SELECT * FROM usuario WHERE iduser = ${id}`;
   const rpta = await this.pool.query(query);
   return rpta.rows;
 }
