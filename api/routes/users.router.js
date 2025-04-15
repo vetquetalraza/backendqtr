@@ -44,12 +44,12 @@ router.post('/login', async (req, res,next)  => {
 
     if (!login) return res.status(404).json({ message: 'Usuario y/o contraseña incorrecta' });
 
-    // const passwordIsValid = bcrypt.compareSync(body.password, user.password);
-    // if (!passwordIsValid) return res.status(401).json({ message: 'Contraseña incorrecta' });
+    const passwordIsValid = bcrypt.compareSync(body.password, user.password);
+    if (!passwordIsValid) return res.status(401).json({ message: 'Contraseña incorrecta' });
 
-    // const token = jwt.sign({ id: user.iduser }, SECRET, { expiresIn: '1h' });
+    const token = jwt.sign({ id: user.iduser }, SECRET, { expiresIn: '1h' });
 
-    // res.json({ token });
+    res.json({ token });
 }
 );
 
