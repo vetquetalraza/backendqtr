@@ -43,7 +43,7 @@ router.post('/login', async (req, res,next)  => {
     const body = req.body;
     const login = await service.authenticate(body);
 
-    if (!login) return res.status(404).json({ message: 'Usuario y/o contraseña incorrecta' });
+    if (login.length == 0) return res.status(404).json({ message: 'Usuario y/o contraseña incorrecta' });
 
     //const passwordIsValid = bcrypt.compareSync(body.password, login[0].passworduser);
     //if (!passwordIsValid) return res.status(401).json({ message: 'Contraseña incorrecta' });
