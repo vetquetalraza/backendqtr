@@ -34,7 +34,7 @@ async findOne(id) {
 async authenticate(values){
   var nameuser = values.username;
   var password = values.password;
-  const query = `SELECT iduser, nameuser, passworduser FROM usuario WHERE nameuser = '${nameuser}' and passworduser = '${password}';`;
+  const query = `SELECT iduser, nameuser, passworduser FROM usuario WHERE nameuser = '${nameuser}';`;
   const rpta = await this.pool.query(query);
   return rpta.rows;
 }
