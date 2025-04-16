@@ -48,7 +48,7 @@ router.post('/login', async (req, res,next)  => {
     //const passwordIsValid = bcrypt.compareSync(body.password, login[0].passworduser);
     //if (!passwordIsValid) return res.status(401).json({ message: 'Contraseña incorrecta' });
 
-    if (body.password !== login[0].passworduser) return res.status(401).json({ message: 'Contraseña incorrecta backend' });
+    if (body.password !== login[0].passworduser) return res.status(401).json({ message: 'Contraseña incorrecta' });
 
     const token = jwt.sign({ id: login.iduser }, SECRET, { expiresIn: '1h' });
 
