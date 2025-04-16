@@ -4,7 +4,7 @@ const express = require('express');
 const cors = require('cors');
 const routerApi = require('./routes');
 const fs = require('fs');
-const jwt = require('jsonwebtoken');
+
 
 
 const { logErrors,  errorHandler, boomErrorHandler } = require('./middlewares/error.handle')

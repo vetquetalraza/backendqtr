@@ -3,6 +3,7 @@ const UsersService = require('./../services/users.service')
 const router = express.Router();
 const service = new UsersService();
 const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
 
 const SECRET = 'tu_clave_secreta';
 
