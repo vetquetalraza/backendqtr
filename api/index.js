@@ -10,8 +10,20 @@ const { logErrors,  errorHandler, boomErrorHandler } = require('./middlewares/er
 const app = express();
 const port = process.env.PORT || 3001;
 
+const whitelist = ['http://localhost:3000','http://localhost:3001/public','https://quetalraza.com','https://api-vet-2utn.onrender.com/','https://front-vet.onrender.com'];
+const options = {
+  origin: (origin, callback) => {
+    if(whitelist.includes(origin) || !origin) {
+      callback(null, true);
+    } else {
+      callback(new Error('No permitido'));
+    }
+  }
+}
+
 app.use(cors(options));
 routerApi(app);
+
 //****************************************************************************************************
 
 // Ruta protegida
@@ -31,16 +43,7 @@ routerApi(app);
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.json());
 
-const whitelist = ['http://localhost:3000','http://localhost:3001/public','https://quetalraza.com','https://api-vet-2utn.onrender.com/','https://front-vet.onrender.com'];
-const options = {
-  origin: (origin, callback) => {
-    if(whitelist.includes(origin) || !origin) {
-      callback(null, true);
-    } else {
-      callback(new Error('No permitido'));
-    }
-  }
-}
+
 
 app.use(logErrors);
 app.use(boomErrorHandler);
