@@ -10,7 +10,7 @@ const { logErrors,  errorHandler, boomErrorHandler } = require('./middlewares/er
 const app = express();
 const port = process.env.PORT || 3001;
 
-const whitelist = ['http://localhost:3000','http://localhost:3001/public','https://quetalraza.com','https://api-vet-2utn.onrender.com/','https://front-vet.onrender.com'];
+const whitelist = ['http://localhost:3000','http://localhost:3001','https://quetalraza.com','https://api-vet-2utn.onrender.com/','https://front-vet.onrender.com'];
 const options = {
   origin: (origin, callback) => {
     if(whitelist.includes(origin) || !origin) {
@@ -18,7 +18,8 @@ const options = {
     } else {
       callback(new Error('No permitido'));
     }
-  }
+  },
+  credentials: true,
 }
 
 app.use(cors(options));
