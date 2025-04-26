@@ -1,13 +1,14 @@
 const express = require('express');
-const UsersService = require('./../services/users.service')
+const UsersService = require('./../services/users.service');
 const router = express.Router();
 const service = new UsersService();
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+const authMiddleware = require('../middlewares/authMiddleware');
 
-const SECRET = '123456';
+const SECRET = process.env.JWT_SECRET || 'a45ghn890';
 
-router.get('/', async (req,res,next) => {
+router.get('/', authMiddleware, async (req,res,next) => {
   try {
     const users = await service.find();
     res.json(users);
@@ -16,7 +17,7 @@ router.get('/', async (req,res,next) => {
   }
 });
 
-router.get('/:id', async (req,res,next) => {
+router.get('/:id', authMiddleware, async (req,res,next) => {
     try {
       const { id } = req.params;
       const user = await service.findOne(id);
@@ -27,7 +28,7 @@ router.get('/:id', async (req,res,next) => {
   }
 );
 
-router.post('/', async (req, res,next)  => {
+router.post('/', authMiddleware, async (req, res,next)  => {
     try {
       const body = req.body;
       console.log(body)
@@ -64,7 +65,7 @@ router.post('/login', async (req, res,next)  => {
 }
 );
 
-router.patch('/:id', async (req, res,next)  => {
+router.patch('/:id', authMiddleware, async (req, res,next)  => {
     try {
       const { id } = req.params;
       const body = req.body;
@@ -76,7 +77,7 @@ router.patch('/:id', async (req, res,next)  => {
   }
 );
 
-router.delete('/:id', async (req, res, next)  => {
+router.delete('/:id', authMiddleware, async (req, res, next)  => {
   try {
     const { id } = req.params;
     const rpta = await service.delete(id);

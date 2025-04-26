@@ -17,27 +17,28 @@ const reportsRouter = require('./reports.router');
 const symptomsRouter = require('./symptoms.router');
 const usersRouter = require('./users.router');
 const vaccinesRouter = require('./vaccines.router');
+const authMiddleware = require('../middlewares/authMiddleware');
 
 function routerApi(app) {
   const router = express.Router();
-  app.use('/api/v1', router);
-  router.use('/appointments', appointmentRouter);
-  router.use('/batch', batchRouter);
-  router.use('/care', careRouter);
-  router.use('/clients', clientsRouter);
-  router.use('/diagnosis', diagnosisRouter);
-  router.use('/drugs', drugsRouter);
-  router.use('/grooming', groomingRouter);
-  router.use('/history', historyRouter);
+  app.use('/api/v1', router); //el resto de rutas
+  router.use('/appointments',authMiddleware, appointmentRouter);
+  router.use('/batch', authMiddleware,batchRouter);
+  router.use('/care', authMiddleware,careRouter);
+  router.use('/clients', authMiddleware,clientsRouter);
+  router.use('/diagnosis', authMiddleware,diagnosisRouter);
+  router.use('/drugs', authMiddleware,drugsRouter);
+  router.use('/grooming', authMiddleware,groomingRouter);
+  router.use('/history', authMiddleware,historyRouter);
   // router.use('/inventory', inventoryRouter);
   //router.use('/login', usersRouter);
-  router.use('/medical', medicalsRouter);
-  router.use('/medicines', medicinesRouter);
-  router.use('/plan', planRouter);
-  router.use('/pets', petsRouter);
-  router.use('/symptoms', symptomsRouter);
+  router.use('/medical',authMiddleware, medicalsRouter);
+  router.use('/medicines', authMiddleware,medicinesRouter);
+  router.use('/plan', authMiddleware,planRouter);
+  router.use('/pets', authMiddleware,petsRouter);
+  router.use('/symptoms', authMiddleware,symptomsRouter);
   router.use('/users', usersRouter);
-  router.use('/vaccines', vaccinesRouter);
+  router.use('/vaccines', authMiddleware,vaccinesRouter);
 }
 
 module.exports = routerApi;
