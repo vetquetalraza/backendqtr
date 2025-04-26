@@ -23,6 +23,14 @@ const options = {
 }
 
 app.use(cors(options));
+
+app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.json());
+
+app.use(logErrors);
+app.use(boomErrorHandler);
+app.use(errorHandler);
+
 routerApi(app);
 
 //****************************************************************************************************
@@ -40,16 +48,6 @@ routerApi(app);
 //});
 
 //****************************************************************************************************
-
-app.use(express.static(path.join(__dirname, 'public')));
-app.use(express.json());
-
-
-
-app.use(logErrors);
-app.use(boomErrorHandler);
-app.use(errorHandler);
-
 
 //SUBIR FOTOGRAFIAS
 // const storage = multer.diskStorage({
