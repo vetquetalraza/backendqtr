@@ -43,7 +43,6 @@ router.post('/login', async (req, res,next)  => {
 
     try {
       const body = req.body;
-      console.log(body);
       const login = await service.authenticate(body);
 
       if (login.length == 0) return res.status(404).json({ message: 'Usuario y/o contraseña incorrecta' });
@@ -54,8 +53,9 @@ router.post('/login', async (req, res,next)  => {
       if (body.password !== login[0].passworduser) return res.status(401).json({ message: 'Contraseña incorrecta' });
 
       const token = jwt.sign({ id: login.iduser }, SECRET, { expiresIn: '1h' });
-
-      res.json({ token });
+      const username = login[0].nameuser;
+      console.log(username)
+      res.json({ token , username});
 
     } catch (error) {
       next(error)
