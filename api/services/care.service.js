@@ -16,7 +16,7 @@ async findOne(id){
   INNER JOIN client on client.dniclient = pet.dniclient
   INNER JOIN speciePet on pet.idspeciepet = speciePet.idspeciepet
   INNER JOIN vetservices on vetservices.idvetservices = ap.idvetservices
-  where dateappointment >='${start}' and dateappointment <= '${end}' and statusappointment='Agendado';`;
+  where dateappointment >='${start}' and dateappointment <= '${end}' and statusappointment='1';`;
   const rpta = await this.pool.query(query);
   return rpta.rows;
 }
