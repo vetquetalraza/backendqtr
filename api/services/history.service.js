@@ -7,11 +7,14 @@ constructor(){
   this.pool.on('error', (err) => console.error(err));
 }
 
-//Traer datos de la mascota y su dueño
-async findPet(id) {
-  const query = 'SELECT * FROM drugs;';
-  const rpta = await this.pool.query(query);
-  return rpta.rows;
+//Traer listado de atenciones
+async findHistory(id) {
+    const query = `SELECT appo.idappointment , appo.idpet, TO_CHAR(appo.dateappointment, 'dd/mm/yyyy'), appo.timeappointment, ser.namevetservices,appo.statusappointment
+    FROM appointment as appo
+    INNER JOIN vetservices as ser on ser.idvetservices = appo.idvetservices
+    WHERE statusappointment = '3' and idpet = '${id}';`
+    const rpta = await this.pool.query(query);
+    return rpta.rows;
 }
 
 //Traer datos de todas las atenciones o historial, baños, consulta medica y plan de vacunación.
@@ -32,9 +35,6 @@ async findPlan(id) {
   const rpta = await this.pool.query(query);
   return rpta.rows;
 }
-
-
-
 
 
 }

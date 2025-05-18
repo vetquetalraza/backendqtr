@@ -17,7 +17,7 @@ async create(data) {
       diagnosis = data.diagnosis,
       createat = new Date().toJSON(),
       modifiedat = new Date().toJSON();
-  const query = `UPDATE appointment SET statusappointment = 'Atendido' WHERE idappointment = ${idappo};
+  const query = `UPDATE appointment SET statusappointment = '3' WHERE idappointment = ${idappo};
 
   INSERT INTO petcare(idappointment, anamnesispetcare, weightpetcare, temperaturepetcare, treatmentpetcare, createat, modifiedat)
   VALUES (${idappo}, '${anamnesis}', ${weight}, ${temperature},'${treatment}','${createat}','${modifiedat}') RETURNING idpetcare`;

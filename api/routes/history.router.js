@@ -3,10 +3,10 @@ const HistoryService = require('./../services/history.service')
 const router = express.Router();
 const service = new HistoryService();
 
-router.get('/pet/:id', async (req,res,next) => {
+router.get('/history/:id', async (req,res,next) => {
   try {
     const { id } = req.params;
-    const history = await service.findPet(id);
+    const history = await service.findHistory(id);
     res.json(history);
   } catch (error) {
     next(error);

@@ -17,7 +17,7 @@ class PlanService {
       comments = data.comments,
       createat = new Date().toJSON(),
       modifiedat = new Date().toJSON();
-    const query = `UPDATE appointment SET statusappointment = 'Atendido' WHERE idappointment = ${idappo};
+    const query = `UPDATE appointment SET statusappointment = '3' WHERE idappointment = ${idappo};
 
     INSERT INTO vaccinescheduling(idappointment, createat, modifiedat, weigthvaccine, temperaturevaccine,commentsvaccine)
     VALUES (${idappo}, '${createat}', '${modifiedat}',${weight}, ${temperature},'${comments}') RETURNING idvaccinescheduling`;
