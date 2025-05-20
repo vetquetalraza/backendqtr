@@ -20,7 +20,7 @@ async findHistory(id) {
 
 //Traer datos de todas las atenciones o historial, baños, consulta medica y plan de vacunación.
 async findGrooming(id) {
-  const query = `SELECT idgroomingpet, idappointment, photobeforegroomingpet, photoaftergroomingpet, commentsgroomingpet, createat
+  const query = `SELECT idgroomingpet, idappointment, photobeforegroomingpet, photoaftergroomingpet, commentsgroomingpet, TO_CHAR(createat, 'dd/mm/yyyy HH24:MI') as createat
 	FROM groomingpet WHERE idappointment = '${id}';`;
   const rpta = await this.pool.query(query);
   return rpta.rows;
