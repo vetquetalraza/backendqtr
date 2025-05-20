@@ -34,7 +34,8 @@ async findMedical(id) {
 }
 
 async findPlan(id) {
-  const query = `SELECT * FROM drugs WHERE categorydrug = 'Vacuna';`;
+  const query = `SELECT idvaccinescheduling, idappointment, TO_CHAR(createat, 'dd/mm/yyyy HH24:MI') as createat, weigthvaccine, temperaturevaccine, commentsvaccine
+	FROM vaccinescheduling WHERE idappointment = '${id}';`;
   const rpta = await this.pool.query(query);
   return rpta.rows;
 }
