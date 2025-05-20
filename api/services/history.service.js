@@ -27,7 +27,7 @@ async findGrooming(id) {
 }
 
 async findMedical(id) {
-  const query = `SELECT idpetcare, idappointment, anamnesispetcare, weightpetcare, temperaturepetcare, treatmentpetcare, createat
+  const query = `SELECT idpetcare, idappointment, anamnesispetcare, weightpetcare, temperaturepetcare, treatmentpetcare, TO_CHAR(createat, 'dd/mm/yyyy HH24:MI') as createat
 	FROM petcare WHERE idappointment = '${id}';`;
   const rpta = await this.pool.query(query);
   return rpta.rows;
