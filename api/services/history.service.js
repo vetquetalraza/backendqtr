@@ -49,6 +49,33 @@ async findVaccines(id) {
   return rpta.rows;
 }
 
+async findSymptoms(id) {
+  const query = `SELECT sym.namesymptomspet
+  FROM historysymptomspet AS his
+  JOIN symptomspet AS sym ON his.idsymptomspet = sym.idsymptomspet
+  WHERE his.idpetcare =  '${id}';`;
+  const rpta = await this.pool.query(query);
+  return rpta.rows;
+}
+
+async findDiagnosis(id) {
+  const query = `SELECT dig.namediagnosispet
+  FROM public.historydiagnosispet AS his
+  JOIN diagnosispet AS dig ON his.iddiagnosispet = dig.iddiagnosispet
+  WHERE his.idpetcare = '${id}';`;
+  const rpta = await this.pool.query(query);
+  return rpta.rows;
+}
+
+async findMedicines(id) {
+  const query = `SELECT med.dosagehistorymedicine, dru.namedrug, dru.presentationdrug
+  FROM historymedicine AS med
+  JOIN drugs AS dru ON med.iddrug = dru.iddrug
+  WHERE med.idpetcare = '${id}';`;
+  const rpta = await this.pool.query(query);
+  return rpta.rows;
+}
+
 }
 
 module.exports = HistoryService;
