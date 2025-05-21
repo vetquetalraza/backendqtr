@@ -44,7 +44,16 @@ router.get('/plan/:id', async (req,res,next) => {
   } catch (error) {
     next(error);
   }
-}
-);
+});
+
+router.get('/vaccines/:id', async (req,res,next) => {
+  try {
+    const { id } = req.params;
+    const history = await service.findVaccines(id);
+    res.json(history);
+  } catch (error) {
+    next(error);
+  }
+});
 
 module.exports = router;

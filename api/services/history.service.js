@@ -40,6 +40,14 @@ async findPlan(id) {
   return rpta.rows;
 }
 
+async findVaccines(id) {
+  const query = `SELECT vac.numbervaccine, dru.namedrug, TO_CHAR(vac.createat, 'dd/mm/yyyy HH24:MI') AS createat
+  FROM historyvaccine AS vac
+  JOIN drugs AS dru ON vac.iddrug = dru.iddrug
+  WHERE idvaccinescheduling = '${id}';`;
+  const rpta = await this.pool.query(query);
+  return rpta.rows;
+}
 
 }
 
