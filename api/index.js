@@ -33,32 +33,6 @@ app.use(errorHandler);
 
 routerApi(app);
 
-//****************************************************************************************************
-
-// Ruta protegida
-//app.get('/api', (req, res) => {
-
-//   const token = req.headers['authorization'];
-//   if (!token) return res.status(403).json({ message: 'No token provided' });
-
-//   jwt.verify(token, SECRET, (err, decoded) => {
-//     if (err) return res.status(401).json({ message: 'Token inválido' });
-//     res.json({ message: `Bienvenido usuario ID ${decoded.id}` });
-//   });
-//});
-
-//****************************************************************************************************
-
-//SUBIR FOTOGRAFIAS
-// const storage = multer.diskStorage({
-//   destination: (req, file, cb) => {
-//       cb(null, path.join(__dirname, 'uploads/'));
-//   },
-//   filename: (req, file, cb) => {
-//       cb(null, file.fieldname + "_" + Date.now() + path.extname(file.originalname))
-//   }
-// })
-
 const uploadDir = path.join(__dirname, 'uploads');
 
 if (!fs.existsSync(uploadDir)) {
@@ -83,6 +57,15 @@ app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 // Ruta para subir archivos
 app.post('/upload', upload.single('photo'), (req, res) => {
   res.send({ filePath: `/uploads/${req.file.filename}` });
+});
+
+app.get('/uploads', (req, res) => {
+  fs.readdir(uploadDir, (err, files) => {
+    if (err) {
+      return res.status(500).json({ error: 'Error leyendo la carpeta uploads' });
+    }
+    res.json({ files });
+  });
 });
 
 //END
