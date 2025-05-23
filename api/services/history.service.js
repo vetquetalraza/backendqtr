@@ -27,8 +27,42 @@ async findGrooming(id) {
 }
 
 async findMedical(id) {
-  const query = `SELECT idpetcare, idappointment, anamnesispetcare, weightpetcare, temperaturepetcare, treatmentpetcare, TO_CHAR(createat, 'dd/mm/yyyy HH24:MI') as createat
-	FROM petcare WHERE idappointment = '${id}';`;
+  const query = `SELECT
+  ca.idpetcare,
+  ca.idappointment,
+  ca.anamnesispetcare,
+  ca.weightpetcare,
+  ca.temperaturepetcare,
+  ca.treatmentpetcare,
+  TO_CHAR(ca.createat, 'dd/mm/yyyy HH24:MI') as createat,
+
+  (
+    SELECT jsonb_agg(DISTINCT jsonb_build_object('name', sym.namesymptomspet))
+    FROM historysymptomspet his
+    JOIN symptomspet sym ON his.idsymptomspet = sym.idsymptomspet
+    WHERE his.idpetcare = ca.idpetcare
+  ) AS symptoms,
+
+  (
+    SELECT jsonb_agg(DISTINCT jsonb_build_object('name', dig.namediagnosispet))
+    FROM historydiagnosispet hig
+    JOIN diagnosispet dig ON hig.iddiagnosispet = dig.iddiagnosispet
+    WHERE hig.idpetcare = ca.idpetcare
+  ) AS diagnosis,
+
+  (
+    SELECT jsonb_agg(DISTINCT jsonb_build_object(
+      'dosage', med.dosagehistorymedicine,
+      'name', dru.namedrug,
+      'presentation', dru.presentationdrug
+    ))
+    FROM historymedicine med
+    JOIN drugs dru ON med.iddrug = dru.iddrug
+    WHERE med.idpetcare = ca.idpetcare
+  ) AS medicines
+
+  FROM petcare AS ca
+  WHERE ca.idappointment = '${id}';`;
   const rpta = await this.pool.query(query);
   return rpta.rows;
 }
@@ -42,42 +76,6 @@ async findPlan(id) {
   JOIN drugs AS dru ON his.iddrug = dru.iddrug
   WHERE idappointment = '${id}'
   GROUP BY vac.idvaccinescheduling, vac.idappointment,vac.weigthvaccine, vac.createat,vac.temperaturevaccine, vac.commentsvaccine;`;
-  const rpta = await this.pool.query(query);
-  return rpta.rows;
-}
-
-async findVaccines(id) {
-  const query = `SELECT vac.numbervaccine, dru.namedrug, TO_CHAR(vac.createat, 'dd/mm/yyyy HH24:MI') AS createat
-  FROM historyvaccine AS vac
-  JOIN drugs AS dru ON vac.iddrug = dru.iddrug
-  WHERE idvaccinescheduling = '${id}';`;
-  const rpta = await this.pool.query(query);
-  return rpta.rows;
-}
-
-async findSymptoms(id) {
-  const query = `SELECT sym.namesymptomspet
-  FROM historysymptomspet AS his
-  JOIN symptomspet AS sym ON his.idsymptomspet = sym.idsymptomspet
-  WHERE his.idpetcare =  '${id}';`;
-  const rpta = await this.pool.query(query);
-  return rpta.rows;
-}
-
-async findDiagnosis(id) {
-  const query = `SELECT dig.namediagnosispet
-  FROM public.historydiagnosispet AS his
-  JOIN diagnosispet AS dig ON his.iddiagnosispet = dig.iddiagnosispet
-  WHERE his.idpetcare = '${id}';`;
-  const rpta = await this.pool.query(query);
-  return rpta.rows;
-}
-
-async findMedicines(id) {
-  const query = `SELECT med.dosagehistorymedicine, dru.namedrug, dru.presentationdrug
-  FROM historymedicine AS med
-  JOIN drugs AS dru ON med.iddrug = dru.iddrug
-  WHERE med.idpetcare = '${id}';`;
   const rpta = await this.pool.query(query);
   return rpta.rows;
 }
