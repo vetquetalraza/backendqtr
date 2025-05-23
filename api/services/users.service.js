@@ -13,8 +13,8 @@ async create(data) {
   var password = data.password;
   var createat = new Date().toJSON();
   var modifiedat = new Date().toJSON();
-  const query = `INSERT INTO usuario(nameuser, passworduser, createat, modifiedat)
-    VALUES ('${nameuser}', '${password}', '${createat}', '${modifiedat}') RETURNING iduser;`;
+  const query = `INSERT INTO usuario(nameuser, passworduser, statususer, createat, modifiedat)
+    VALUES ('${nameuser}', '${password}', 0 ,'${createat}','${modifiedat}') RETURNING iduser;`;
   const rpta = await this.pool.query(query);
   return rpta.rows;
 }
@@ -34,7 +34,7 @@ async findOne(id) {
 async authenticate(values){
   var nameuser = values.username;
   var password = values.password;
-  const query = `SELECT iduser, nameuser, passworduser FROM usuario WHERE nameuser = '${nameuser}';`;
+  const query = `SELECT iduser, nameuser, passworduser FROM usuario WHERE nameuser = '${nameuser}' AND statususer = 1;`;
   const rpta = await this.pool.query(query);
   return rpta.rows;
 }
