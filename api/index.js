@@ -59,14 +59,14 @@ app.post('/upload', upload.single('photo'), (req, res) => {
   res.send({ filePath: `/uploads/${req.file.filename}` });
 });
 
-app.get('/uploads', (req, res) => {
-  fs.readdir(uploadDir, (err, files) => {
-    if (err) {
-      return res.status(500).json({ error: 'Error leyendo la carpeta uploads' });
-    }
-    res.json({ files });
-  });
-});
+// app.get('/uploads', (req, res) => {
+//   fs.readdir(uploadDir, (err, files) => {
+//     if (err) {
+//       return res.status(500).json({ error: 'Error leyendo la carpeta uploads' });
+//     }
+//     res.json({ files });
+//   });
+// });
 
 //END
 
