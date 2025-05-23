@@ -34,8 +34,14 @@ async findMedical(id) {
 }
 
 async findPlan(id) {
-  const query = `SELECT idvaccinescheduling, idappointment, TO_CHAR(createat, 'dd/mm/yyyy HH24:MI') as createat, weigthvaccine, temperaturevaccine, commentsvaccine
-	FROM vaccinescheduling WHERE idappointment = '${id}';`;
+  const query = `SELECT vac.idvaccinescheduling, vac.idappointment, TO_CHAR(vac.createat, 'dd/mm/yyyy HH24:MI') as createat,
+  vac.weigthvaccine, vac.temperaturevaccine, vac.commentsvaccine,
+  json_agg(json_build_object('number',his.numbervaccine, 'name',dru.namedrug, 'presentation',dru.presentationdrug)) as vaccines
+  FROM vaccinescheduling AS vac
+  JOIN historyvaccine AS his ON vac.idvaccinescheduling = his.idvaccinescheduling
+  JOIN drugs AS dru ON his.iddrug = dru.iddrug
+  WHERE idappointment = '${id}'
+  GROUP BY vac.idvaccinescheduling, vac.idappointment,vac.weigthvaccine, vac.createat,vac.temperaturevaccine, vac.commentsvaccine;`;
   const rpta = await this.pool.query(query);
   return rpta.rows;
 }
