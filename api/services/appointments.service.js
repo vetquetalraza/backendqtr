@@ -13,29 +13,12 @@ async create_update(data) {
       idservice = data.idservice,
       dateappo = data.dateappo,
       timeappo = data.timeappo,
+      timeendappo = data.timeendappo,
       comment = data.comment,
       status = data.status,
-      duration = data.duration,
       createat = new Date().toJSON(),
       modifiedat = new Date().toJSON();
-  const query = `
-  DO $$
-  BEGIN
-      IF EXISTS (
-          SELECT 1
-          FROM appointment
-          WHERE idappointment = ${idappo}
-      ) THEN
-          UPDATE appointment
-	        SET idvetservices=${idservice},dateappointment='${dateappo}', timeappointment='${timeappo}',commentappointment='${comment}', statusappointment='${status}', modifiedat='${modifiedat}'
-	        WHERE idappointment = ${idappo};
-      ELSE
-
-        INSERT INTO appointment(idpet, idvetservices, dateappointment, timeappointment, commentappointment, statusappointment, createat, modifiedat,durationappointment)
-        VALUES (${idpet}, ${idservice}, '${dateappo}', '${timeappo}', '${comment}', '${status}', '${createat}', '${modifiedat}',${duration});
-
-      END IF;
-  END $$;`;
+  const query = `SELECT agendar_cita(${idappo},${idpet}, ${idservice}, '${dateappo}', '${timeappo}', '${timeendappo}','${comment}','${status}','${createat}','${modifiedat}');`;
   const rpta = await this.pool.query(query);
   return rpta.rows;
 }
