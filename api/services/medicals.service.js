@@ -15,6 +15,7 @@ async create(data) {
       treatment = data.treatment,
       symptoms = data.symptoms,
       diagnosis = data.diagnosis,
+      materials = data.materials,
       createat = new Date().toJSON(),
       modifiedat = new Date().toJSON();
   const query = `UPDATE appointment SET statusappointment = '3' WHERE idappointment = ${idappo};
@@ -31,12 +32,19 @@ async create(data) {
     this.pool.query(secondQuery);
   });
 
-
   diagnosis.forEach(element => {
     var thirdQuery = `INSERT INTO historydiagnosispet(iddiagnosispet, idpetcare, createat, modifiedat)
       VALUES (${element}, ${idpetcare}, '${createat}', '${modifiedat}'); `
     this.pool.query(thirdQuery);
   });
+
+  materials.forEach((element,dosage) => {
+    var fourthQuery = `INSERT INTO historymedicine(iddrug, idpetcare, dosagehistorymedicine, createat, modifiedat)
+      VALUES (${element}, ${idpetcare}, '${dosage}','${createat}', '${modifiedat}'); `
+    this.pool.query(fourthQuery);
+  });
+
+
   return 1;
 }
 
