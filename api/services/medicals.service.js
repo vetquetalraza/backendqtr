@@ -38,9 +38,10 @@ async create(data) {
     this.pool.query(thirdQuery);
   });
 
-  materials.forEach((element,dosage) => {
+  materials.forEach(element => {
+    const [drug,dosage] = element;
     var fourthQuery = `INSERT INTO historymedicine(iddrug, idpetcare, dosagehistorymedicine, createat, modifiedat)
-      VALUES (${element}, ${idpetcare}, '${dosage}','${createat}', '${modifiedat}'); `
+      VALUES (${drug}, ${idpetcare}, '${dosage}','${createat}', '${modifiedat}'); `
     this.pool.query(fourthQuery);
   });
 
