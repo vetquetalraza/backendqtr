@@ -26,29 +26,62 @@ async create(data) {
   const rpta = await this.pool.query(query);
   const idpetcare = rpta[1].rows[0].idpetcare;
 
-  symptoms.forEach(element => {
-    var secondQuery = `INSERT INTO historysymptomspet(idsymptomspet, idpetcare, createat, modifiedat)
-      VALUES (${element}, ${idpetcare}, '${createat}', '${modifiedat}');`
-    this.pool.query(secondQuery);
-  });
+  // symptoms.forEach(element => {
+  //   var secondQuery = `INSERT INTO historysymptomspet(idsymptomspet, idpetcare, createat, modifiedat)
+  //     VALUES (${element}, ${idpetcare}, '${createat}', '${modifiedat}');`
+  //   this.pool.query(secondQuery);
+  // });
 
-  diagnosis.forEach(element => {
-    var thirdQuery = `INSERT INTO historydiagnosispet(iddiagnosispet, idpetcare, createat, modifiedat)
-      VALUES (${element}, ${idpetcare}, '${createat}', '${modifiedat}'); `
-    this.pool.query(thirdQuery);
-  });
+  // diagnosis.forEach(element => {
+  //   var thirdQuery = `INSERT INTO historydiagnosispet(iddiagnosispet, idpetcare, createat, modifiedat)
+  //     VALUES (${element}, ${idpetcare}, '${createat}', '${modifiedat}'); `
+  //   this.pool.query(thirdQuery);
+  // });
 
-  materials.forEach(element => {
-    const [drug,dosage] = element;
-    var fourthQuery = `INSERT INTO historymedicine(iddrug, idpetcare, dosagehistorymedicine, createat, modifiedat)
-      VALUES (${drug}, ${idpetcare}, '${dosage}','${createat}', '${modifiedat}'); `
-    this.pool.query(fourthQuery);
-  });
+  // materials.forEach(element => {
+  //   const [drug,dosage] = element;
+  //   var fourthQuery = `INSERT INTO historymedicine(iddrug, idpetcare, dosagehistorymedicine, createat, modifiedat)
+  //     VALUES (${drug}, ${idpetcare}, '${dosage}','${createat}', '${modifiedat}'); `
+  //   this.pool.query(fourthQuery);
+  // });
 
+    // Inserción de síntomas
+    const symptomPromises = symptoms.map((element) => {
+      const query = `
+        INSERT INTO historysymptomspet(idsymptomspet, idpetcare, createat, modifiedat)
+        VALUES ($1, $2, $3, $4)
+      `;
+      return this.pool.query(query, [element, idpetcare, createat, modifiedat]);
+    });
 
-  return 1;
+    // Inserción de diagnósticos
+    const diagnosisPromises = diagnosis.map((element) => {
+      const query = `
+        INSERT INTO historydiagnosispet(iddiagnosispet, idpetcare, createat, modifiedat)
+        VALUES ($1, $2, $3, $4)
+      `;
+      return this.pool.query(query, [element, idpetcare, createat, modifiedat]);
+    });
+
+    // Inserción de medicamentos
+    const medicinePromises = materials.map(([drug, dosage]) => {
+      const query = `
+        INSERT INTO historymedicine(iddrug, idpetcare, dosagehistorymedicine, createat, modifiedat)
+        VALUES ($1, $2, $3, $4, $5)
+      `;
+      return this.pool.query(query, [drug, idpetcare, dosage, createat, modifiedat]);
+    });
+
+    // Ejecutar todo en paralelo y esperar
+    await Promise.all([
+      ...symptomPromises,
+      ...diagnosisPromises,
+      ...medicinePromises
+    ]);
+
+    return 1;
+
 }
-
 
 }
 
