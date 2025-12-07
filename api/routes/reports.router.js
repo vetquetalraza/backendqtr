@@ -9,10 +9,11 @@ router.get("/reporte-inventario", async (req, res) => {
     const query = `
     SELECT d.iddrug,d.namedrug,d.descriptiondrug, d.categorydrug, b.manufacturedate, b.expirationdate, b.quantity
     FROM drugs as d
-    INNER JOIN batchesdrugs as b ON d.iddrug = b.iddrug`;
+    INNER JOIN batchesdrugs as b ON d.iddrug = b.iddrug;`;
 
     const result = await pool.query(query);
     const rpta = result.rows;
+    console.log(rpta);
 
     // 🔹 2. Crear Excel
     const workbook = new ExcelJS.Workbook();
@@ -56,13 +57,13 @@ router.get("/reporte-inventario", async (req, res) => {
 
     rpta.forEach(item => {
       sheet.addRow([
-        item.iddrug,
-        item.namedrug,
-        item.descriptiondrug,
-        item.categorydrug,
-        item.manufacturedate ?? '',
-        item.expirationdate ?? '',
-        item.quantity
+      item.iddrug ?? "",
+      item.namedrug ?? "",
+      item.descriptiondrug ?? "",
+      item.categorydrug ?? "",
+      item.manufacturedate ?? "",
+      item.expirationdate ?? "",
+      item.quantity ?? 0
       ]);
     });
 
