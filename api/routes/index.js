@@ -38,6 +38,7 @@ function routerApi(app) {
   router.use('/medicines', authMiddleware,medicinesRouter);
   router.use('/plan', authMiddleware,planRouter);
   router.use('/pets', authMiddleware,petsRouter);
+  router.use('/report4',authMiddleware, reportsRouter)
   router.use('/symptoms', authMiddleware,symptomsRouter);
   router.use('/users', usersRouter);
   router.use('/vaccines', authMiddleware,vaccinesRouter);
