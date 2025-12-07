@@ -5,7 +5,7 @@ const pool = require('../../libs/postgres.pool');
 
 router.get("/reporte-inventario", async (req, res) => {
   try {
-    // 🔹 1. Obtener inventario desde la BD
+    // 1. Obtener inventario desde la BD
     const query = `
     SELECT d.iddrug,d.namedrug,d.descriptiondrug, d.categorydrug, b.manufacturedate, b.expirationdate, b.quantity
     FROM drugs as d
@@ -69,7 +69,7 @@ router.get("/reporte-inventario", async (req, res) => {
 
     // ========== FILAS DE LA BD ==========
 
-   rows.forEach((item) => {
+   rpta.forEach((item) => {
       const row = sheet.addRow([
       item.iddrug ?? "",
       item.namedrug ?? "",
@@ -95,7 +95,7 @@ router.get("/reporte-inventario", async (req, res) => {
     sheet.getColumn(6).width = 18; // F. VENCIMIENTO
     sheet.getColumn(7).width = 12; // STOCK
 
-    // 🔹 3. Enviar archivo Excel
+    // 3. Enviar archivo Excel
     res.setHeader(
       "Content-Type",
       "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
