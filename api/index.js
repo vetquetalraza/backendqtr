@@ -20,6 +20,9 @@ const options = {
     }
   },
   credentials: true,
+  methods: ['GET', 'POST'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+  exposedHeaders: ['Content-Disposition']
 }
 
 app.use(cors(options));
