@@ -54,12 +54,13 @@ router.post("/reporte-inventario", async (req, res) => {
     // ========== FILAS DE LA BD ==========
     rows.forEach(item => {
       sheet.addRow([
-        item.code,
-        item.name,
-        item.description,
-        item.lot,
-        item.expiration,
-        item.stock
+        item.iddrug,
+        item.namedrug,
+        item.descriptiondrug,
+        item.categorydrug,
+        item.manufacturedate,
+        item.expirationdate,
+        item.quantity
       ]);
     });
 
