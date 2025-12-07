@@ -87,7 +87,7 @@ router.get("/reporte-inventario", async (req, res) => {
     });
 
     // ====== Anchos fijos elegantes ======
-    sheet.getColumn(1).width = 5; // CÓDIGO
+    sheet.getColumn(1).width = 12; // CÓDIGO
     sheet.getColumn(2).width = 28; // PRODUCTO
     sheet.getColumn(3).width = 40; // DESCRIPCIÓN
     sheet.getColumn(4).width = 18; // CATEGORÍA
