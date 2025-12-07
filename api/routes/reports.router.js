@@ -32,17 +32,18 @@ router.get("/reporte-inventario", async (req, res) => {
     sheet.getCell("A2").alignment = { horizontal: "center" };
 
     // ========== CABECERA ==========
-    sheet.columns = [
-      { header: "CÓDIGO", key: "iddrug", width: 15 },
-      { header: "PRODUCTO", key: "namedrug", width: 25 },
-      { header: "DESCRIPCIÓN", key: "descriptiondrug", width: 30 },
-      { header: "CATEGORÍA", key: "categorydrug", width: 20 },
-      { header: "FECHA FABRICACIÓN", key: "manufacturedate", width: 20 },
-      { header: "FECHA VENCIMIENTO", key: "expirationdate", width: 20 },
-      { header: "STOCK", key: "quantity", width: 10 },
-    ];
+    sheet.addRow([
+      "CÓDIGO",
+      "PRODUCTO",
+      "DESCRIPCIÓN",
+      "CATEGORÍA",
+      "FECHA FABRICACIÓN",
+      "FECHA VENCIMIENTO",
+      "STOCK"
+    ]);
 
-    sheet.getRow(3).eachCell((cell) => {
+    const headerRow = sheet.getRow(3);
+    headerRow.eachCell((cell) => {
       cell.font = { bold: true };
       cell.alignment = { horizontal: "center" };
       cell.border = {
@@ -68,8 +69,15 @@ router.get("/reporte-inventario", async (req, res) => {
     });
 
     // Auto-ajustar columnas
-    sheet.columns.forEach((col) => {
-      col.width = col.header.length < 20 ? 20 : col.header.length;
+    sheet.columns.forEach((column) => {
+      let maxLength = 0;
+
+      column.eachCell({ includeEmpty: true }, (cell) => {
+        const value = cell.value ? cell.value.toString().length : 10;
+        if (value > maxLength) maxLength = value;
+      });
+
+      column.width = maxLength < 15 ? 15 : maxLength + 2;
     });
 
     // 🔹 3. Enviar archivo Excel
