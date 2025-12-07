@@ -3,7 +3,7 @@ const ExcelJS = require("exceljs");
 const router = express.Router();
 const pool = require('../../libs/postgres.pool');
 
-router.post("/reporte-inventario", async (req, res) => {
+router.get("/reporte-inventario", async (req, res) => {
   try {
     // 🔹 1. Obtener inventario desde la BD
     const query = `
