@@ -6,6 +6,7 @@ const careRouter = require('./care.router');
 const clientsRouter = require('./clients.router');
 const diagnosisRouter = require('./diagnosis.router');
 const drugsRouter = require('./drugs.router');
+const dniRouter = require('./dni.router');
 const groomingRouter = require('./grooming.router');
 const historyRouter = require('./history.router');
 const inventoryRouter = require('./inventory.router');
@@ -28,6 +29,7 @@ function routerApi(app) {
   router.use('/clients', authMiddleware,clientsRouter);
   router.use('/diagnosis', authMiddleware,diagnosisRouter);
   router.use('/drugs', authMiddleware,drugsRouter);
+  router.use('/dni', authMiddleware,dniRouter);
   router.use('/grooming', authMiddleware,groomingRouter);
   router.use('/history', authMiddleware,historyRouter);
   // router.use('/inventory', inventoryRouter);
