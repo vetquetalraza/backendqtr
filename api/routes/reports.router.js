@@ -32,15 +32,15 @@ router.get("/reporte-inventario", async (req, res) => {
     sheet.getCell("A2").alignment = { horizontal: "center" };
 
     // ========== CABECERA ==========
-    sheet.addRow([
-      "CÓDIGO",
-      "PRODUCTO",
-      "DESCRIPCIÓN",
-      "CATEGORÍA",
-      "FECHA FABRICACIÓN",
-      "FECHA VENCIMIENTO",
-      "STOCK"
-    ]);
+    sheet.columns = [
+      { header: "CÓDIGO", key: "iddrug", width: 15 },
+      { header: "PRODUCTO", key: "namedrug", width: 25 },
+      { header: "DESCRIPCIÓN", key: "descriptiondrug", width: 30 },
+      { header: "CATEGORÍA", key: "categorydrug", width: 20 },
+      { header: "FECHA FABRICACIÓN", key: "manufacturedate", width: 20 },
+      { header: "FECHA VENCIMIENTO", key: "expirationdate", width: 20 },
+      { header: "STOCK", key: "quantity", width: 10 },
+    ];
 
     sheet.getRow(3).eachCell((cell) => {
       cell.font = { bold: true };
