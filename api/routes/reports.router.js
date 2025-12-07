@@ -61,7 +61,7 @@ router.get("/reporte-inventario", async (req, res) => {
       cell.fill = {
         type: "pattern",
         pattern: "solid",
-        fgColor: { argb: "1F4E78" }, // azul elegante
+        fgColor: { argb: "af81db" }, // azul elegante
       };
       cell.alignment = { horizontal: "center", vertical: "middle" };
       cell.border = borderAll;
