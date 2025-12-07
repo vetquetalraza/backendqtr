@@ -11,21 +11,22 @@ router.get("/reporte-inventario", async (req, res) => {
     FROM drugs as d
     INNER JOIN batchesdrugs as b ON d.iddrug = b.iddrug`;
 
-    const [rows] = await pool.query(query);
+    const result = await pool.query(query);
+    const rpta = result.rows;
 
     // 🔹 2. Crear Excel
     const workbook = new ExcelJS.Workbook();
     const sheet = workbook.addWorksheet("Inventario");
 
     // ========== TITULO ==========
-    sheet.mergeCells("A1:F1");
+    sheet.mergeCells("A1:G1");
     sheet.getCell("A1").value = "INVENTARIO QUE TAL RAZA";
     sheet.getCell("A1").font = { bold: true, size: 16 };
     sheet.getCell("A1").alignment = { horizontal: "center" };
 
     // ========== FECHA ==========
     const fecha = new Date().toLocaleString("es-PE");
-    sheet.mergeCells("A2:F2");
+    sheet.mergeCells("A2:G2");
     sheet.getCell("A2").value = `FECHA Y HORA GENERACIÓN: ${fecha}`;
     sheet.getCell("A2").alignment = { horizontal: "center" };
 
@@ -52,15 +53,15 @@ router.get("/reporte-inventario", async (req, res) => {
     });
 
     // ========== FILAS DE LA BD ==========
-    const rpta = rows.rows;
+
     rpta.forEach(item => {
       sheet.addRow([
         item.iddrug,
         item.namedrug,
         item.descriptiondrug,
         item.categorydrug,
-        item.manufacturedate,
-        item.expirationdate,
+        item.manufacturedate ?? '',
+        item.expirationdate ?? '',
         item.quantity
       ]);
     });
