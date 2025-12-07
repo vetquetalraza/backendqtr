@@ -13,51 +13,64 @@ router.get("/reporte-inventario", async (req, res) => {
 
     const result = await pool.query(query);
     const rpta = result.rows;
-    console.log(rpta);
-
-    // 🔹 2. Crear Excel
+    //console.log(rpta);
+ // Crear libro
     const workbook = new ExcelJS.Workbook();
-    const sheet = workbook.addWorksheet("Inventario");
+    const sheet = workbook.addWorksheet("Inventario", {
+      properties: { defaultRowHeight: 20 },
+    });
 
-    // ========== TITULO ==========
+    // ======= Diseño general =======
+    const borderAll = {
+      top: { style: "thin" },
+      left: { style: "thin" },
+      bottom: { style: "thin" },
+      right: { style: "thin" },
+    };
+
+    // ====== Fila 1 – Título ======
     sheet.mergeCells("A1:G1");
-    sheet.getCell("A1").value = "INVENTARIO QUE TAL RAZA";
-    sheet.getCell("A1").font = { bold: true, size: 16 };
-    sheet.getCell("A1").alignment = { horizontal: "center" };
+    const title = sheet.getCell("A1");
+    title.value = "INVENTARIO GENERAL";
+    title.font = { size: 18, bold: true, color: { argb: "1F4E78" } };
+    title.alignment = { horizontal: "center" };
 
-    // ========== FECHA ==========
-    const fecha = new Date().toLocaleString("es-PE");
+    // ====== Fila 2 – Fecha ======
     sheet.mergeCells("A2:G2");
-    sheet.getCell("A2").value = `FECHA Y HORA GENERACIÓN: ${fecha}`;
-    sheet.getCell("A2").alignment = { horizontal: "center" };
+    const fecha = new Date().toLocaleString("es-PE");
+    const dateCell = sheet.getCell("A2");
+    dateCell.value = `Generado: ${fecha}`;
+    dateCell.font = { italic: true, color: { argb: "555555" } };
+    dateCell.alignment = { horizontal: "center" };
 
-    // ========== CABECERA ==========
-    sheet.addRow([
+    // ====== Fila 3 – Cabeceras ======
+    const headerRow = sheet.addRow([
       "CÓDIGO",
       "PRODUCTO",
       "DESCRIPCIÓN",
       "CATEGORÍA",
-      "FECHA FABRICACIÓN",
-      "FECHA VENCIMIENTO",
-      "STOCK"
+      "F. FABRICACIÓN",
+      "F. VENCIMIENTO",
+      "STOCK",
     ]);
 
-    const headerRow = sheet.getRow(3);
+    headerRow.height = 22;
+
     headerRow.eachCell((cell) => {
-      cell.font = { bold: true };
-      cell.alignment = { horizontal: "center" };
-      cell.border = {
-        top: { style: "thin" },
-        left: { style: "thin" },
-        bottom: { style: "thin" },
-        right: { style: "thin" },
+      cell.font = { bold: true, color: { argb: "FFFFFF" } };
+      cell.fill = {
+        type: "pattern",
+        pattern: "solid",
+        fgColor: { argb: "1F4E78" }, // azul elegante
       };
+      cell.alignment = { horizontal: "center", vertical: "middle" };
+      cell.border = borderAll;
     });
 
     // ========== FILAS DE LA BD ==========
 
-    rpta.forEach(item => {
-      sheet.addRow([
+   rows.forEach((item) => {
+      const row = sheet.addRow([
       item.iddrug ?? "",
       item.namedrug ?? "",
       item.descriptiondrug ?? "",
@@ -66,19 +79,21 @@ router.get("/reporte-inventario", async (req, res) => {
       item.expirationdate ?? "",
       item.quantity ?? 0
       ]);
-    });
 
-    // Auto-ajustar columnas
-    sheet.columns.forEach((column) => {
-      let maxLength = 0;
-
-      column.eachCell({ includeEmpty: true }, (cell) => {
-        const value = cell.value ? cell.value.toString().length : 10;
-        if (value > maxLength) maxLength = value;
+      row.eachCell((cell) => {
+        cell.border = borderAll;
+        cell.alignment = { vertical: "middle", wrapText: true };
       });
-
-      column.width = maxLength < 15 ? 15 : maxLength + 2;
     });
+
+    // ====== Anchos fijos elegantes ======
+    sheet.getColumn(1).width = 12; // CÓDIGO
+    sheet.getColumn(2).width = 28; // PRODUCTO
+    sheet.getColumn(3).width = 40; // DESCRIPCIÓN
+    sheet.getColumn(4).width = 18; // CATEGORÍA
+    sheet.getColumn(5).width = 18; // F. FABRICACIÓN
+    sheet.getColumn(6).width = 18; // F. VENCIMIENTO
+    sheet.getColumn(7).width = 12; // STOCK
 
     // 🔹 3. Enviar archivo Excel
     res.setHeader(
