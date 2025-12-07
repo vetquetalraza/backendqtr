@@ -52,7 +52,8 @@ router.post("/reporte-inventario", async (req, res) => {
     });
 
     // ========== FILAS DE LA BD ==========
-    rows.forEach(item => {
+    const rpta = rows.rows;
+    rpta.forEach(item => {
       sheet.addRow([
         item.iddrug,
         item.namedrug,
