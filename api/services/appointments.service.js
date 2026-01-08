@@ -32,7 +32,7 @@ async find() {
 }
 
 async findOne(id){
-  const query = `SELECT cl.dniclient, cl.nameclient, cl.surnameclient, ap.idpet, pt.namepet, ap.idappointment ,idvetservices,TO_CHAR(dateappointment, 'yyyy-mm-dd') as  dateappointment, timeappointment, durationappointment, commentappointment,statusappointment
+  const query = `SELECT cl.dniclient, cl.nameclient, cl.surnameclient, ap.idpet, pt.namepet, ap.idappointment ,idvetservices,TO_CHAR(dateappointment, 'yyyy-mm-dd') as  dateappointment, timeappointment, timeendappointment,durationappointment, commentappointment,statusappointment
 FROM appointment as ap
 INNER JOIN pet as pt on ap.idpet = pt.idpet
 INNER JOIN client as cl on pt.dniclient = cl.dniclient
