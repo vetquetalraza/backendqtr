@@ -13,7 +13,7 @@ async findHistory(id) {
     appo.statusappointment, ser.idvetservices
     FROM appointment as appo
     INNER JOIN vetservices as ser on ser.idvetservices = appo.idvetservices
-    WHERE statusappointment = '3' and idpet = '${id}';`
+    WHERE statusappointment = '2' and idpet = '${id}';`
     const rpta = await this.pool.query(query);
     return rpta.rows;
 }
