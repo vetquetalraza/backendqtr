@@ -24,9 +24,9 @@ async create_update(data) {
 }
 
 async find() {
-  const query = `SELECT ap.idappointment ,ap.idvetservices, namevetservices,TO_CHAR(dateappointment, 'yyyy-mm-dd') as  dateappointment, timeappointment, durationappointment, statusappointment
+  const query = `SELECT ap.idappointment ,ap.idvetservices, namevetservices,TO_CHAR(dateappointment, 'yyyy-mm-dd') as  dateappointment, timeappointment, timeendappointment, durationappointment, statusappointment
   FROM appointment as ap
-  INNER JOIN vetservices as vt on ap.idvetservices = vt.idvetservices`;
+  INNER JOIN vetservices as vt on ap.idvetservices = vt.idvetservices where ap.statusappointment <> '3'`;
   const rpta = await this.pool.query(query);
   return rpta.rows;
 }
