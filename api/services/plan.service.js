@@ -17,7 +17,7 @@ class PlanService {
       comments = data.comments,
       createat = new Date().toJSON(),
       modifiedat = new Date().toJSON();
-    const query = `UPDATE appointment SET statusappointment = '3' WHERE idappointment = ${idappo};
+    const query = `UPDATE appointment SET statusappointment = '2' WHERE idappointment = ${idappo};
 
     INSERT INTO vaccinescheduling(idappointment, createat, modifiedat, weigthvaccine, temperaturevaccine,commentsvaccine)
     VALUES (${idappo}, '${createat}', '${modifiedat}',${weight}, ${temperature},'${comments}') RETURNING idvaccinescheduling`;
@@ -27,7 +27,7 @@ class PlanService {
 
     idvaccine.forEach(element => {
       var secondQuery = `INSERT INTO historyvaccine(iddrug, idvaccinescheduling, createat, modifiedat,numbervaccine)
-	    VALUES (${element.idvaccine}, ${idschedule}, '${createat}', '${modifiedat}',${element.dosage});`;
+	    VALUES (${element.id}, ${idschedule}, '${createat}', '${modifiedat}',${element.dosis});`;
       this.pool.query(secondQuery);
     });
 
