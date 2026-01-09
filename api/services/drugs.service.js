@@ -44,7 +44,7 @@ GROUP BY
 }
 
 async findMedicines() {
-  const query = 'SELECT iddrug as value, CONCAT(namedrug, ' - ', presentationdrug, ' - ', quantityperpresentation ) as label FROM drugs;';
+  const query = `SELECT iddrug as value, CONCAT(namedrug, ' - ', presentationdrug, ' - ', quantityperpresentation ) as label FROM drugs;`;
   const rpta = await this.pool.query(query);
   return rpta.rows;
 }
