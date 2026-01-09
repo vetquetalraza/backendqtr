@@ -27,7 +27,7 @@ class PlanService {
 
     idvaccine.forEach(element => {
       var secondQuery = `INSERT INTO historyvaccine(iddrug, idvaccinescheduling, createat, modifiedat,numbervaccine)
-	    VALUES (${element.id}, ${idschedule}, '${createat}', '${modifiedat}',${element.dosis});`;
+	    VALUES (${element[0]}, ${idschedule}, '${createat}', '${modifiedat}',${element[1]});`;
       this.pool.query(secondQuery);
     });
 
