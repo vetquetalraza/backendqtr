@@ -2,6 +2,8 @@ const express = require('express');
 const PetsService = require('./../services/pets.service')
 const router = express.Router();
 const service = new PetsService();
+const upload = require('../middlewares/upload');
+const uploadToCloudinary = require('../utils/uploadToCloudinary');
 
 router.get('/', async (req,res,next) => {
   try {
@@ -23,7 +25,6 @@ router.get('/:id', async (req,res,next) => {
   }
 );
 
-
 router.get('/client/:id', async (req,res,next) => {
   try {
     const { id } = req.params;
@@ -36,8 +37,18 @@ router.get('/client/:id', async (req,res,next) => {
 );
 
 router.post('/', async (req, res,next)  => {
+
     try {
       const body = req.body;
+      const photoUrl = null;
+
+      if (req.file) {
+        const result = await uploadToCloudinary(req.file.buffer);
+        photoUrl = result.secure_url;
+      }
+
+      body.photo = photoUrl;
+
       const newPet = await service.create_update(body);
       res.status(201).json(newPet)
     } catch (error) {
@@ -45,7 +56,6 @@ router.post('/', async (req, res,next)  => {
     }
   }
 );
-
 
 router.delete('/:id', async (req, res, next)  => {
   try {
