@@ -40,14 +40,23 @@ router.post('/', upload.single('photoFile'), async (req, res, next) => {
 
     try {
       const body = req.body;
-      let photoUrl = null;
+      let oldPhoto = null;
 
-      if (req.file) {
-        const result = await uploadToCloudinary(req.file.buffer);
-        photoUrl = result.secure_url;
+      if (body.idpet && body.idpet != 0) {
+        const pet = await service.findOne(body.idpet);
+        oldPhoto = pet?.photopublicid;
       }
 
-      body.photo = photoUrl;
+      if (req.file) {
+
+        if (oldPhoto) {
+          await cloudinary.uploader.destroy(oldPhoto);
+        }
+
+        const result = await uploadToCloudinary(req.file.buffer);
+        body.photo = result.url;
+        body.photopublicid = result.public_id;
+      }
 
       const newPet = await service.create_update(body);
       res.status(201).json(newPet)

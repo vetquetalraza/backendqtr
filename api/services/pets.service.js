@@ -19,6 +19,7 @@ async create_update(data) {
       birthdate = data.birthdate,
       signs = data.signs,
       photo = data.photo,
+      photoid = data.photopublicid,
       createat = new Date().toJSON(),
       modifiedat = new Date().toJSON();
   const query = `
@@ -30,12 +31,12 @@ async create_update(data) {
           WHERE idpet = ${id}
       ) THEN
           UPDATE pet
-	        SET namepet='${namepet}', idspeciepet=${idspecie}, idgenderpet=${idgender}, idoriginpet=${idorigin}, racepet='${race}', colorpet='${color}', birthdatepet='${birthdate}', particularsignspet='${signs}', photopet='${photo}', modifiedat='${modifiedat}'
+	        SET namepet='${namepet}', idspeciepet=${idspecie}, idgenderpet=${idgender}, idoriginpet=${idorigin}, racepet='${race}', colorpet='${color}', birthdatepet='${birthdate}', particularsignspet='${signs}', photopet='${photo}', photopublicid='${photoid}',modifiedat='${modifiedat}'
 	        WHERE idpet = ${id};
       ELSE
 
-        INSERT INTO pet(dniclient, namepet, idspeciepet, idgenderpet, idoriginpet, racepet, colorpet, birthdatepet, particularsignspet, photopet, createat, modifiedat)
-	      VALUES ( '${client}', '${namepet}', ${idspecie}, ${idgender}, ${idorigin}, '${race}', '${color}', '${birthdate}', '${signs}', '${photo}', '${createat}', '${modifiedat}');
+        INSERT INTO pet(dniclient, namepet, idspeciepet, idgenderpet, idoriginpet, racepet, colorpet, birthdatepet, particularsignspet, photopet, createat, modifiedat,photopublicid)
+	      VALUES ( '${client}', '${namepet}', ${idspecie}, ${idgender}, ${idorigin}, '${race}', '${color}', '${birthdate}', '${signs}', '${photo}', '${createat}', '${modifiedat}', '${photoid}');
 
       END IF;
   END $$;`;
@@ -46,7 +47,7 @@ async create_update(data) {
 
 
 async find() {
-  const query = `SELECT idpet, dniclient, namepet, pet.idspeciepet, namespeciepet, namegenderpet, pet.idgenderpet, idoriginpet, racepet, colorpet, birthdatepet, particularsignspet, photopet, pet.createat, pet.modifiedat
+  const query = `SELECT idpet, dniclient, namepet, pet.idspeciepet, namespeciepet, namegenderpet, pet.idgenderpet, idoriginpet, racepet, colorpet, birthdatepet, particularsignspet, photopet, pet.createat, pet.modifiedat, photopublicid
 	FROM pet
 	INNER JOIN speciePet on pet.idspeciepet = speciePet.idspeciepet
 	INNER JOIN genderPet on pet.idgenderpet = genderPet.idgenderpet;`
@@ -56,7 +57,7 @@ async find() {
 
 async findOne(id){
   const query = `
-  SELECT idpet, pet.dniclient, nameclient,surnameclient,namepet, idspeciepet, idgenderpet, idoriginpet, racepet, colorpet, TO_CHAR(birthdatepet, 'yyyy-mm-dd') as birthdatepet, particularsignspet, photopet
+  SELECT idpet, pet.dniclient, nameclient,surnameclient,namepet, idspeciepet, idgenderpet, idoriginpet, racepet, colorpet, TO_CHAR(birthdatepet, 'yyyy-mm-dd') as birthdatepet, particularsignspet, photopet, photopublicid
   FROM pet
   INNER JOIN client ON pet.dniclient = client.dniclient WHERE idpet= ${id};`;
   const rpta = await this.pool.query(query);
