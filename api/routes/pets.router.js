@@ -69,6 +69,15 @@ router.post('/', upload.single('photoFile'), async (req, res, next) => {
 router.delete('/:id', async (req, res, next)  => {
   try {
     const { id } = req.params;
+
+    let oldPhoto = null;
+    const pet = await service.findOne(id);
+    oldPhoto = pet?.photopublicid;
+
+    if (oldPhoto) {
+      await cloudinary.uploader.destroy(oldPhoto);
+    }
+
     const rpta = await service.delete(id);
     res.json(rpta);
   } catch (error) {
