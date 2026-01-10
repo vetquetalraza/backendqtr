@@ -64,14 +64,14 @@ async findOne(id){
 async update(id, changes){
   var name = changes.name,
       description = changes.description,
-      batch = changes.batch,
-      duedate = changes.duedate,
+      presentation = changes.presentation,
+      quantity = changes.quantity,
+      category = changes.category,
       brand = changes.brand,
-      stock = changes.stock,
       modifiedat = new Date().toJSON();
-  const query = `UPDATE vaccine
-	SET namevaccine='${name}', descriptionvaccine='${description}', batchvaccine='${batch}', duedatevaccine='${duedate}', brandvaccine='${brand}', stockvaccine='${stock}', modifiedat='${modifiedat}'
-	WHERE idvaccine = '${id}';`;
+  const query = `UPDATE drugs
+	SET namedrug='${name}', descriptiondrug='${description}', presentationdrug='${presentation}', quantityperpresentation='${quantity}', categorydrug='${category}', branddrug='${brand}', modifiedat='${modifiedat}'
+	WHERE iddrug = '${id}';`;
   const rpta = await this.pool.query(query);
   return rpta.rows;
 }
