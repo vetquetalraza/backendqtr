@@ -10,7 +10,7 @@ const { logErrors,  errorHandler, boomErrorHandler } = require('./middlewares/er
 const app = express();
 const port = process.env.PORT || 3001;
 
-const whitelist = ['http://localhost:3000','http://localhost:3001','https://vetadmin.quetalraza.com','https://quetalraza.com','https://api-vet-2utn.onrender.com/','https://front-vet.onrender.com'];
+const whitelist = ['http://localhost:3000','http://localhost:3001','https://vetadmin.quetalraza.com','https://quetalraza.com','https://api-vet-2utn.onrender.com','https://front-vet.onrender.com'];
 const options = {
   origin: (origin, callback) => {
     if(whitelist.includes(origin) || !origin) {
@@ -19,7 +19,7 @@ const options = {
       callback(new Error('No permitido'));
     }
   },
-  credentials: true,
+  credentials: false,
   methods: ['GET', 'POST','PUT','DELETE','PATCH','OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization'],
   exposedHeaders: ['Content-Disposition']
@@ -36,37 +36,39 @@ app.use((req, res, next) => {
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.json());
 
+routerApi(app);
+
 app.use(logErrors);
 app.use(boomErrorHandler);
 app.use(errorHandler);
 
-routerApi(app);
 
-const uploadDir = path.join(__dirname, 'uploads');
 
-if (!fs.existsSync(uploadDir)) {
-  fs.mkdirSync(uploadDir);
-}
+// const uploadDir = path.join(__dirname, 'uploads');
+
+// if (!fs.existsSync(uploadDir)) {
+//   fs.mkdirSync(uploadDir);
+// }
 
 // Configuración de almacenamiento con multer
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, path.join(__dirname, 'uploads/')); // Carpeta donde se almacenarán los archivos
-  },
-  filename: (req, file, cb) => {
-    cb(null, file.originalname); // Nombre del archivo
-  }
-});
+// const storage = multer.diskStorage({
+//   destination: (req, file, cb) => {
+//     cb(null, path.join(__dirname, 'uploads/')); // Carpeta donde se almacenarán los archivos
+//   },
+//   filename: (req, file, cb) => {
+//     cb(null, file.originalname); // Nombre del archivo
+//   }
+// });
 
-const upload = multer({ storage });
+// const upload = multer({ storage });
 
 // Middleware para servir archivos estáticos
-app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+// app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 // Ruta para subir archivos
-app.post('/upload', upload.single('photo'), (req, res) => {
-  res.send({ filePath: `/uploads/${req.file.filename}` });
-});
+// app.post('/upload', upload.single('photo'), (req, res) => {
+//   res.send({ filePath: `/uploads/${req.file.filename}` });
+// });
 
 // app.get('/uploads', (req, res) => {
 //   fs.readdir(uploadDir, (err, files) => {
