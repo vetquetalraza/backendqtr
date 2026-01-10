@@ -40,7 +40,7 @@ router.post('/', upload.single('photoFile'), async (req, res) => {
 
     try {
       const body = req.body;
-      const photoUrl = null;
+      let photoUrl = null;
 
       if (req.file) {
         const result = await uploadToCloudinary(req.file.buffer);
