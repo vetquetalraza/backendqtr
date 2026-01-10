@@ -36,7 +36,7 @@ router.get('/client/:id', async (req,res,next) => {
 }
 );
 
-router.post('/', upload.single('photoFile'), async (req, res) => {
+router.post('/', upload.single('photoFile'), async (req, res, next) => {
 
     try {
       const body = req.body;
