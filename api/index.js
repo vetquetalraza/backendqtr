@@ -26,6 +26,7 @@ const options = {
 }
 
 app.use(cors(options));
+app.options('*', cors(corsOptions));
 
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.json());
