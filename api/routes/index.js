@@ -21,6 +21,7 @@ const vaccinesRouter = require('./vaccines.router');
 const authMiddleware = require('../middlewares/authMiddleware');
 
 function routerApi(app) {
+
   const router = express.Router();
   app.use('/api/v1', router); //el resto de rutas
   router.use('/appointments',authMiddleware, appointmentRouter);
@@ -37,7 +38,10 @@ function routerApi(app) {
   router.use('/medical',authMiddleware, medicalsRouter);
   router.use('/medicines', authMiddleware,medicinesRouter);
   router.use('/plan', authMiddleware,planRouter);
-  router.use('/pets', authMiddleware,petsRouter);
+  router.use('/pets', (req,res,next)=>{
+    if(req.method === 'OPTIONS') return next();
+    authMiddleware(req,res,next);
+  }, petsRouter);
   router.use('/report4',authMiddleware, reportsRouter)
   router.use('/symptoms', authMiddleware,symptomsRouter);
   router.use('/users', usersRouter);
