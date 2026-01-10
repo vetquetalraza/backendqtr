@@ -10,12 +10,14 @@ constructor(){
 async create(data) {
   var idappo = data.idappo,
       before = data.before,
+      beforepublicid = data.beforephotopublicid,
       after = data.after,
+      afterpublicid = data.afterphotopublicid,
       comment = data.comment,
       createat = new Date().toJSON(),
       modifiedat = new Date().toJSON();
-  const query = `INSERT INTO groomingpet(idappointment, photobeforegroomingpet, photoaftergroomingpet, commentsgroomingpet,createat, modifiedat)
-	VALUES (${idappo}, '${before}', '${after}', '${comment}', '${createat}', '${modifiedat}') RETURNING idgroomingpet;
+  const query = `INSERT INTO groomingpet(idappointment, photobeforegroomingpet, photoaftergroomingpet, commentsgroomingpet,createat, modifiedat,beforephotopublicid,afterphotopublicid)
+	VALUES (${idappo}, '${before}', '${after}', '${comment}', '${createat}', '${modifiedat}','${beforepublicid}', '${afterpublicid}') RETURNING idgroomingpet;
 
   UPDATE appointment SET statusappointment = '2' WHERE idappointment = ${idappo};`;
   const rpta = await this.pool.query(query);
@@ -36,11 +38,13 @@ async findOne(id){
 
 async update(id, changes){
   var before = changes.before,
+      beforepublicid = data.beforephotopublicid,
       after = changes.after,
+      afterpublicid = data.afterphotopublicid,
       comment = changes.comment,
       modifiedat = new Date().toJSON();
   const query = `UPDATE groomingpet
-	SET photobeforegroomingpet='${before}', photoaftergroomingpet='${after}', commentsgroomingpet='${comment}', modifiedat='${modifiedat}'
+	SET photobeforegroomingpet='${before}', beforephotopublicid = '${beforepublicid}', photoaftergroomingpet='${after}', afterphotopublicid='${afterpublicid}',commentsgroomingpet='${comment}', modifiedat='${modifiedat}'
 	WHERE idgroomingpet = '${id}';`;
   const rpta = await this.pool.query(query);
   return rpta.rows;

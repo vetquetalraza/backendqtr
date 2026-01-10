@@ -75,7 +75,8 @@ async update(id, changes){
 }
 
 async delete(id){
-  const query = `DELETE FROM client WHERE dniclient = '${id}'`;
+  const query = `DELETE FROM client WHERE dniclient = '${id}';
+  DELETE FROM usuario WHERE nameuser = '${id}';`;
   const rpta = await this.pool.query(query);
   return rpta.rows;
 }

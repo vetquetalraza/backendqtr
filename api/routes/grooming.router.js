@@ -2,6 +2,8 @@ const express = require('express');
 const GroomingService = require('../services/grooming.service')
 const router = express.Router();
 const service = new GroomingService();
+const upload = require('../middlewares/upload');
+const uploadToCloudinary = require('../utils/uploadToCloudinary');
 
 router.get('/', async (req,res,next) => {
   try {
@@ -23,14 +25,39 @@ router.get('/:id', async (req,res,next) => {
   }
 );
 
-router.post('/', async (req, res,next)  => {
+router.post('/', upload.fields([
+    { name: 'beforePhoto', maxCount: 1 },
+    { name: 'afterPhoto', maxCount: 1 }
+  ]),
+  async (req, res, next) => {
+
     try {
       const body = req.body;
+      let before = null;
+      let after = null;
+
+      if (req.files?.beforePhoto) {
+        const result = await uploadToCloudinary(req.files.beforePhoto[0].buffer);
+        before = result;
+      }
+
+      if (req.files?.afterPhoto) {
+        const result = await uploadToCloudinary(req.files.afterPhoto[0].buffer);
+        after = result;
+      }
+
+      body.before = before?.url || null;
+      body.beforephotopublicid = before?.public_id || null;
+
+      body.after = after?.url || null;
+      body.afterphotopublicid = after?.public_id || null;
+
       const newGrooming = await service.create(body);
       res.status(201).json(newGrooming)
     } catch (error) {
       next(error);
     }
+
   }
 );
 
