@@ -1,21 +1,28 @@
 const pool = require('../../libs/postgres.pool');
 const UsersService = require('./users.service')
-const user = new UsersService();
+// const user = new UsersService();
+const bcrypt = require('bcrypt');
 
 class ClientsService {
 
 constructor(){
   this.pool = pool;
-  this.pool.on('error', (err) => console.error(err));
+  if (this.pool.listenerCount('error') === 0) {
+    this.pool.on('error', (err) => console.error(err));
+  }
 }
 
 async create(data) {
+
+  const saltRounds = 10;
+  const hashedPassword = await bcrypt.hash(user.password, saltRounds);
   var dni = data.dni;
   var name = data.name;
   var surname = data.surname;
   var address = data.address;
   var email = data.email;
   var phone = data.phone;
+  var password = hashedPassword;
   var createat = new Date().toJSON();
   var modifiedat = new Date().toJSON();
   const query = `
@@ -33,7 +40,7 @@ async create(data) {
 
           WITH inserted_user AS (
             INSERT INTO usuario(nameuser, passworduser, createat, modifiedat)
-            VALUES ('${dni}', '${dni}', '${createat}', '${modifiedat}')
+            VALUES ('${dni}', '${password}', '${createat}', '${modifiedat}')
             RETURNING iduser
           )
 

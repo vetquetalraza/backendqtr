@@ -4,7 +4,9 @@ class HistoryService {
 
 constructor(){
   this.pool = pool;
-  this.pool.on('error', (err) => console.error(err));
+  if (this.pool.listenerCount('error') === 0) {
+    this.pool.on('error', (err) => console.error(err));
+  }
 }
 
 //Traer listado de atenciones

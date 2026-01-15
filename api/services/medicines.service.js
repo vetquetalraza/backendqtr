@@ -4,7 +4,10 @@ class MedicinesService {
 
 constructor(){
   this.pool = pool;
+
+  if (this.pool.listenerCount('error') === 0) {
   this.pool.on('error', (err) => console.error(err));
+  }
 }
 
 async create(data) {
