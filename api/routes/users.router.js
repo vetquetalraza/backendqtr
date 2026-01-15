@@ -48,16 +48,15 @@ router.post('/login', async (req, res,next)  => {
 
       if (login.length == 0) return res.status(404).json({ message: 'Usuario y/o contraseña incorrecta' });
 
-      //const passwordIsValid = bcrypt.compareSync(body.password, login[0].passworduser);
-      //if (!passwordIsValid) return res.status(401).json({ message: 'Contraseña incorrecta' });
+      // const match = await bcrypt.compare(body.password, login[0].passworduser);
 
-      const match = await bcrypt.compare(body.password, login[0].passworduser);
+      // if (!match) {
+      //   return res.status(401).json({ message: 'Contraseña incorrecta' });
+      // }
 
-      if (!match) {
-        return res.status(401).json({ message: 'Contraseña incorrecta' });
-      }
+      if (body.password !== login[0].passworduser) return res.status(401).json({ message: 'Contraseña incorrecta' });
 
-      const token = jwt.sign({ id: login.iduser }, SECRET, { expiresIn: '1h' });
+      const token = jwt.sign({ id: login.iduser }, SECRET, { expiresIn: '3h' });
       const username = login[0].nameuser;
       //console.log(username)
       res.json({ token , username});
