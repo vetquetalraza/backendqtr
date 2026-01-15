@@ -6,7 +6,7 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const authMiddleware = require('../middlewares/authMiddleware');
 
-const SECRET = process.env.JWT_SECRET || 'a45ghn890';
+const SECRET = process.env.JWT_SECRET;
 
 router.get('/', authMiddleware, async (req,res,next) => {
   try {
