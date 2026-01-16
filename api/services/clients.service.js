@@ -1,6 +1,6 @@
 const pool = require('../../libs/postgres.pool');
 const UsersService = require('./users.service')
-// const user = new UsersService();
+const user = new UsersService();
 const bcrypt = require('bcrypt');
 
 class ClientsService {
