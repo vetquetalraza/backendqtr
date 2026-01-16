@@ -14,15 +14,15 @@ constructor(){
 
 async create(data) {
 
-  const saltRounds = 10;
-  const hashedPassword = await bcrypt.hash(user.password, saltRounds);
+  // const saltRounds = 10;
+  // const hashedPassword = await bcrypt.hash(user.password, saltRounds);
   var dni = data.dni;
   var name = data.name;
   var surname = data.surname;
   var address = data.address;
   var email = data.email;
   var phone = data.phone;
-  var password = hashedPassword;
+  // var password = hashedPassword;
   var createat = new Date().toJSON();
   var modifiedat = new Date().toJSON();
   const query = `
@@ -40,7 +40,7 @@ async create(data) {
 
           WITH inserted_user AS (
             INSERT INTO usuario(nameuser, passworduser, createat, modifiedat)
-            VALUES ('${dni}', '${password}', '${createat}', '${modifiedat}')
+            VALUES ('${dni}', '${dni}', '${createat}', '${modifiedat}')
             RETURNING iduser
           )
 
